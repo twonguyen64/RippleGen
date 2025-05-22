@@ -1,0 +1,47 @@
+#tube {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 35%;
+    left: 10%;
+    width: 660px;
+    height: 160px;
+    border: 2px solid grey;
+    overflow: visible;
+}
+
+#draggablecover{
+    height: inherit;
+    width: 16px;
+    max-width: 400px;
+
+    resize: horizontal;
+    overflow: auto;
+    direction: rtl;
+    z-index: 2;
+    margin-left: auto;
+
+    background-color: rgba(45, 124, 56, 0.493);
+}
+
+#wavemedium{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding-left: 2px;
+
+    overflow-x: hidden;
+
+    width: 640px;
+    height: inherit;
+    border: 1px solid rgb(0, 204, 102);
+    z-index: 1;
+}
+
+dot {
+    flex: 0 0 auto;
+    width: 2px;
+    height: 2px;
+    background-color: rgb(43, 46, 226);
+}
