@@ -11,21 +11,51 @@ button{
     font-weight: bold;
 }
 
-#container1 {
-    position: absolute;
-    top: 25%;
-    left: 10%;
-    width: 668px;
+#main{
+    display: flex;
+    flex-wrap: wrap;
+    width: 1200px;
+}
+#waveactivity{
+    display: flex;
+    flex-flow: column;
+    width: 700px;
+    gap: 50px;
+    padding: 50px;
+}
+#controlpanel{
+    display: flex;
+    flex-flow: column;
+    width: 300px;
+    gap: 30px;
+    padding-top: 100px;
+}
+@media (max-width: 1000px)
+{
+  #waveactivity,
+  #controlpanel {
+    width: 100%;
+  }
 }
 
-#tube {
+
+.container{
+    width: 668px;
+}
+#parameters{
+    display: flex;
+    gap: 40px;
+}
+
+
+.tube {
     display: flex;
     align-items: center;
     height: var(--tube-height);
     border-left: var(--tube-end);
 }
 
-#draggablecover{
+.draggablecover{
     height: inherit;
     width: 18px;
     max-width: 400px;
@@ -34,7 +64,7 @@ button{
     background-color: rgb(255, 255, 255);
     border-left: var(--tube-end);
 }
-#axis{
+.axis{
     width: inherit;
     height: 3px;
     transform: translateY(-1px);
@@ -42,7 +72,7 @@ button{
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#wavemedium{
+#wavemedium, #wavemedium-reflected, #wavemedium-sum{
     position: fixed;
     display: flex;
     align-items: center;
@@ -55,48 +85,19 @@ button{
     height: inherit;
     z-index: 1;
 }
-
-#wavemedium-reflected{
-    position: fixed;
-    display: flex;
-    align-items: center;
-    gap: 1px;
-    padding-left: 2px;
-
-    overflow-x: hidden;
-
-    width: 640px;
-    height: inherit;
-    z-index: 1;
+#wavemedium-reflected {
+    z-index: 0;
 }
 
-
-dot {
+dot, dot2, dotsum {
     flex: 0 0 auto;
     width: var(--dotdimensions);
     height: var(--dotdimensions);
-    background-color: rgb(43, 46, 226);
+}
+dot {background-color: rgb(43, 46, 226);}
+dot2 {background-color: rgb(201, 58, 23);}
+dotsum {background-color: rgb(145, 23, 201);}
 
-}
-dot2 {
-    flex: 0 0 auto;
-    width: var(--dotdimensions);
-    height: var(--dotdimensions);
-    background-color: rgb(201, 58, 23);
-}
-
-#control{
-    position: absolute;
-    top: 55%;
-    left: 10%;
-}
-#parameters{
-    position: absolute;
-    display: flex;
-    gap: 40px;
-    top: 65%;
-    left: 10%;
-}
 .parameter{
     font-size: 0.9em;
     font-weight: bold;

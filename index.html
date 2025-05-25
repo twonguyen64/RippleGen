@@ -1,54 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <link rel="stylesheet" href="index.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RippleGen</title>
 </head>
 <body>
+    <div id="main">
+        <div id="waveactivity">
+            <div id="displayvalues">
+                Number of cycles:<label id="cycles"></label><br>
+                Real Frequency:<label id="freal"></label>Hz<br>
+                Frequency ratio:<label id="fratio"></label>
+            </div>
 
-    <div id="container1">
-        <div id="tube">
-            <div id="wavemedium"></div>
-            <div id="wavemedium-reflected"></div>
-            <div id="draggablecover"></div>
-        </div>
-        <div id="axis"></div>
-        <input type="range" min="16" max="324" value="18" class="slider" id="slidercover">
-    </div>
+            <div class="container">
+                <div class="tube">
+                    <div id="wavemedium-sum"></div>
+                    <div class="draggablecover" id="draggablecover-sum"></div>
+                </div>
+                <div class="axis"></div>
+            </div>
 
-    <div id="displayvalues">
-        Number of cycles:<label id="cycles"></label><br>
-        Real Frequency:<label id="freal"></label>Hz<br>
-        Frequency ratio:<label id="fratio"></label>
-    </div>
-
-    <div id="control">
-        <button id="controlWaveButton">SEND WAVE</button>
-        <button id="resetWaveButton">RESET</button>
-    </div>
-    <div id="parameters">
-        <div class="parameter">
-            <label>Frequency</label>
-            <input type="range" min="1" max="50" value="20"
-                class="parameter-slider" id="f">
-            <div>
-                <input type="number"  min="1" max="100" value="20"
-                class="number-input" id="f-box">
-                <label>Hz</label>
+            <div class="container">
+                <div class="tube">
+                    <div id="wavemedium"></div>
+                    <div id="wavemedium-reflected"></div>
+                    <div class="draggablecover" id="draggablecover"></div>
+                </div>
+                <div class="axis"></div>
+                <input type="range" min="16" max="324" value="18" class="slider" id="slidercover">
             </div>
         </div>
-
-        <div class="parameter">
-            <label>Wavespeed</label>
-            <input type="range" min="10" max="60" value="10"
-                class="parameter-slider" id="v">
-            <input type="number" min="10" max="60" value="10"
-                class="number-input" id="v-box">
+        
+        <div id="controlpanel">
+            <div id="control">
+                <button id="controlWaveButton">SEND WAVE</button>
+                <button id="resetWaveButton">RESET</button>
+            </div>
+            <div id="parameters">
+                <div class="parameter">
+                    <label>Frequency</label>
+                    <input type="range" min="1" max="50" value="20"
+                        class="parameter-slider" id="f">
+                    <div>
+                        <input type="number"  min="1" max="100" value="20"
+                        class="number-input" id="f-box">
+                        <label>Hz</label>
+                    </div>
+                </div>
+                <div class="parameter">
+                    <label>Wavespeed</label>
+                    <input type="range" min="10" max="60" value="10"
+                        class="parameter-slider" id="v">
+                    <input type="number" min="10" max="60" value="10"
+                        class="number-input" id="v-box">
+                </div>
+            </div>
         </div>
     </div>
+    
 
     <script src="index.js"></script>
 </body>

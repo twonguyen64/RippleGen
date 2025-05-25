@@ -1,12 +1,15 @@
 const controlWaveButton = document.getElementById("controlWaveButton")
 const draggablecover = document.getElementById("draggablecover")
 const slidercover = document.getElementById("slidercover")
-const dots = document.getElementsByTagName("dot");
-const dots2 = document.getElementsByTagName("dot2");
-const numdatapoints = document.getElementById("numdatapoints")
+
 
 const medium = document.getElementById("wavemedium")
 const mediumreflected = document.getElementById("wavemedium-reflected")
+const mediumsum = document.getElementById("wavemedium-sum")
+
+const dots = document.getElementsByTagName("dot");
+const dots2 = document.getElementsByTagName("dot2");
+const dotsum = document.getElementsByTagName("dotsum");
 
 const parameters = document.getElementById("parameters")
 
@@ -17,7 +20,7 @@ function sleep(ms) {
 const datapoints = 160
 var indexOfLastDot = datapoints - 1
 
-var a = 70
+var a = 50
 var f = 20
 var omega = (2*Math.PI)*f
 var wavespeed = 10
@@ -33,6 +36,9 @@ function generateDots() {
 
         const newdot2 = document.createElement("dot2");
         mediumreflected.appendChild(newdot2)
+
+        const newdot3 = document.createElement("dotsum");
+        mediumsum.appendChild(newdot3)
     }
 
 
@@ -45,12 +51,15 @@ const fratio = document.getElementById("fratio")
 async function animate() {
     var sine = 0
     var sine2 = 0
-    var start = new Date();
+    var sum = 0
+    let reflect = -1 //fixed end = -1, free end = 1
+    //var start = new Date();
     var totalcycles = 0
     var previouselapsed = 0
     var previousinterval = 0
 
     while(loop == true) {
+        /*
         if (sine === 0) {
             var elapsed = new Date() - start;
             var interval = elapsed - previouselapsed
@@ -66,22 +75,34 @@ async function animate() {
             previousinterval = interval
             }
         }
-
+        */
         await sleep(wavespeed)
         t++
         sine = Math.floor(a*Math.sin((-2*Math.PI)*f*(t/1000)))
         dots[0].style.translate = `0px ${sine}px`
 
-        sine2 = parseInt(dots[indexOfLastDot].style.translate.slice(3,))
-        dots2[indexOfLastDot].style.translate = `0px ${-sine2}px`
+        sine2 = parseInt(dots[indexOfLastDot].style.translate.slice(4,))
+        dots2[indexOfLastDot].style.translate = `0px ${reflect*sine2}px`
 
         for (let i = indexOfLastDot; i > 0; i--) {
             dots[i].style.translate = dots[i-1].style.translate
         }
 
-        for (let i = 0; i < datapoints - 1; i++) {
+        for (let i = 0; i < indexOfLastDot; i++) {
             dots2[i].style.translate = dots2[i+1].style.translate
         }
+
+        for (let i = 0; i < indexOfLastDot; i++) {
+            sum = parseInt(dots2[i].style.translate.slice(4,))
+            if (isNaN(sum)) {
+                sum = parseInt(dots[i].style.translate.slice(4,))
+                }
+            else {
+                sum += parseInt(dots[i].style.translate.slice(4,))
+            }
+            dotsum[i].style.translate = `0px ${sum}px`
+        }
+        
     }
 }
 
