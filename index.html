@@ -9,15 +9,10 @@
 <body>
     <div id="main">
         <div id="waveactivity">
-            <div id="displayvalues">
-                Number of cycles:<label id="cycles"></label><br>
-                Real Frequency:<label id="freal"></label>Hz<br>
-                Frequency ratio:<label id="fratio"></label>
-            </div>
 
             <div class="container">
                 <div class="tube">
-                    <div id="wavemedium-sum"></div>
+                    <div class="medium" id="wavemedium-sum"></div>
                     <div class="draggablecover" id="draggablecover-sum"></div>
                 </div>
                 <div class="axis"></div>
@@ -25,10 +20,11 @@
 
             <div class="container" id="container-main">
                 <div class="tube">
-                    <div id="wavemedium"></div>
-                    <div id="wavemedium-reflected"></div>
+                    <div class="medium" id="wavemedium"></div>
+                    <div class="medium" id="wavemedium-reflected"></div>
                     <div class="draggablecover" id="draggablecover">
                         <n id="L"></n>
+                        <n id="L-lambda"></n>
                     </div>
                 </div>
                 <div class="axis"></div>
@@ -43,20 +39,21 @@
             <div id="parameters">
                 <div class="parameter">
                     <label>Frequency</label>
-                    <input type="range" min="3.1416" max="15.708"  step="1.5708"
+                    <input type="range" min="3.1416" max="15.708" value="3.1416" step="1.5708"
                         class="parameter-slider" id="f">
                     <div>
-                        <input type="number"  min="1" max="100" value="20"
-                        class="number-input" id="f-box">
-                        <label>s</label>
+                        <label id="f-box"></label>
                     </div>
                 </div>
                 <div class="parameter">
-                    <label>Time</label>
-                    <input type="range" min="10" max="60" value="10"
-                        class="parameter-slider" id="v">
-                    <input type="number" min="10" max="60" value="10"
-                        class="number-input" id="v-box">
+                    <label>Simulation Speed</label>
+                    <input type="range" min="0.125" max="1" value="1" step="0.125"
+                        class="parameter-slider" id="t">
+                    <div>
+                        <input type="number" min="0.125" max="1" value="1" step="0.125"
+                        class="number-input" id="t-box">
+                        <label>x</label>
+                    </div>
                 </div>
             </div>
         </div>
