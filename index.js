@@ -1,4 +1,6 @@
 const controlWaveButton = document.getElementById("controlWaveButton")
+
+const slidercover = document.getElementById('slidercover')
 const draggablecover = document.getElementById("draggablecover")
 const draggablecoversum = document.getElementById("draggablecover-sum")
 const strlenmeters = document.getElementById('L')
@@ -10,15 +12,18 @@ const dots = document.getElementsByTagName("dot");
 const dots2 = document.getElementsByTagName("dot2");
 const dotsum = document.getElementsByTagName("dotsum");
 
+const axes = document.getElementsByClassName("axis")
+
 const parameters = document.getElementById("parameters")
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const totalstrlenmeters = 4 //m
+var totalstrlenmeters = 10 //m
 const gapdotdistance = 0.3 //rem, (dot width + dot gap)
-const datapoints = 160
+var divisions = 16
+var datapoints = 160
 var indexOfLastDot = datapoints - 1
 
 var a = 2
@@ -45,24 +50,22 @@ function generateDots() {
 }
 
 function generateAxis(totalMeters) {
-    const axes = document.getElementsByClassName("axis")
-    console.log(axes)
     for (const axis of axes) {
         axis.textContent = ''
         let mrk1multiplier = 1
-        for (let i = 0; i < 15; i++) {
-            if ((i+1)%4 === 0) {
-                const mrk = document.createElement('mrk1')
+        for (let i = 1; i < divisions; i++) {
+            if (i%4 === 0) {
+                const mrk = document.createElement('majmrk')
                 const n = document.createElement('n')
                 n.textContent = `${(totalMeters/4)*mrk1multiplier++}m`
                 axis.appendChild(mrk)
                 mrk.appendChild(n)
                 continue
             }
-            const mrk = document.createElement('mrk2')
+            const mrk = document.createElement('minmrk')
             axis.appendChild(mrk)
             
-            if ((i+1)%2 === 0) {
+            if (i%2 === 0) {
                 const n = document.createElement('n')
                 n.textContent = `${(totalMeters/4)*(mrk1multiplier-1) + (totalMeters/8)}`
                 mrk.appendChild(n)
@@ -79,18 +82,39 @@ function generateSliderCover() {
     slidercover.value = 1
     slidercover.max = `${gapdotdistance+ 1 + (datapoints/2)*gapdotdistance}`
     slidercover.step = `${gapdotdistance}`
+    strlenmeters.textContent = `${totalstrlenmeters}m`
 
     slidercover.addEventListener("input", () => {
-        let value = slidercover.value
-        
-        indexOfLastDot = datapoints - Math.ceil((value-1)/gapdotdistance) //minus 1 just in case
+        let value = slidercover.value   
+        indexOfLastDot = parseInt(datapoints - (value-1)/gapdotdistance) //minus 1 just in case
         if (indexOfLastDot > datapoints - 1) indexOfLastDot = datapoints - 1
 
         draggablecover.style.width = `${value}rem`
         draggablecoversum.style.width = `${value}rem`
-        let len = ((indexOfLastDot+1)*(totalstrlenmeters/datapoints)).toFixed(3)
-        //if len = one of the tick marks, then make it equal to that value
+        let len = ((indexOfLastDot+1)*(totalstrlenmeters/datapoints)).toFixed(2)
         strlenmeters.textContent = `${len}m`
+
+        let round = datapoints/(divisions)
+        let num = Math.ceil((indexOfLastDot-(round/2)) / round) * round 
+        
+        if (num < indexOfLastDot) {
+            num = num/(datapoints/divisions)
+            if (num % 2 === 0) {
+                for (const axis of axes) {
+                    const ticks = axis.getElementsByTagName('n')
+                    ticks[num/2 - 1].style.visibility = 'hidden'
+                }
+            }
+        }
+        if (num > indexOfLastDot) {
+            num = num/(datapoints/divisions)
+            if (num % 2 === 1) {
+                for (const axis of axes) {
+                    const ticks = axis.getElementsByTagName('n')
+                    ticks[Math.floor(num/2) - 1].style.visibility = ''
+                }
+            }
+        }
     });
 
     document.getElementById('container-main').appendChild(slidercover)
