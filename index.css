@@ -1,9 +1,13 @@
 :root {
-  --tube-height: 160px;
-  --tube-end: solid 3px black;
-  --dotdimensions: 3px;
-  --dotgap: 1px;
-  font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+    --numberofdots: 160;
+    --dotdimensions: 0.2rem;
+    --dotgap: 0.1rem;
+    --tube-height: 10rem;
+    --tube-end: solid 0.2rem black;
+    --medium-width: calc((var(--dotdimensions) + var(--dotgap))*var(--numberofdots));
+    --medium-padding: 2px;
+    --slidercoverwidth: 1rem;
+    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
 }
 
 button{
@@ -19,8 +23,8 @@ button{
 #waveactivity{
     display: flex;
     flex-flow: column;
-    width: 700px;
-    gap: 50px;
+    width: var(--medium-width) + var(--slidercoverwidth);
+    gap: 25px;
     padding: 50px;
 }
 #controlpanel{
@@ -28,7 +32,7 @@ button{
     flex-flow: column;
     width: 300px;
     gap: 30px;
-    padding-top: 100px;
+    padding-top: 10px;
 }
 @media (max-width: 1000px)
 {
@@ -40,7 +44,7 @@ button{
 
 
 .container{
-    width: 668px;
+    width: calc(var(--medium-width) + var(--slidercoverwidth) + 2*var(--dotdimensions));
 }
 #parameters{
     display: flex;
@@ -53,36 +57,68 @@ button{
     align-items: center;
     height: var(--tube-height);
     border-left: var(--tube-end);
+    overflow: visible;
 }
 
 .draggablecover{
+    position: relative;
+    width: 1rem;
     height: inherit;
-    width: 18px;
-    max-width: 400px;
-    z-index: 2;
     margin-left: auto;
+    z-index: 2;
     background-color: rgb(255, 255, 255);
     border-left: var(--tube-end);
 }
-.axis{
-    width: inherit;
-    height: 3px;
-    transform: translateY(-1px);
-    translate: 0px calc((var(--tube-height)/-2 ));
-    background-color: rgba(0, 0, 0, 0.5);
+.draggablecover > n {
+    top: 55%;
+    left: 0;
+    padding-left: 0.5rem;
+    border-bottom: 0.15rem solid black;
 }
 
+.axis{
+    width: calc(var(--medium-width) - 0.1rem);
+    margin: var(--medium-padding);
+    height: 0.08rem;
+    translate: 0.03rem calc((var(--tube-height)/-2) - 0.1rem);
+    background-color: rgba(0, 0, 0, 0.5);
+
+    overflow: visible;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    font-size: smaller;
+}
+n{
+    font-size: small;
+    position: absolute;
+    left: -0.3em;
+    top:1.2em;
+}
+mrk2 > n {
+    font-size: smaller;
+    left: -0.6em;
+}
+mrk1, mrk2{
+    position: relative;
+    width: 0.08rem;
+    background-color: rgb(0, 0, 0);
+}
+mrk1{height: 0.8rem; width: 0.1rem;}
+mrk2{height: 0.5rem;}
+
 #wavemedium, #wavemedium-reflected, #wavemedium-sum{
-    position: fixed;
+    position: absolute;
+    width: var(--medium-width);
+    height: inherit;
+
     display: flex;
     align-items: center;
-    gap: 1px;
-    padding-left: 2px;
+    gap: var(--dotgap);
 
-    overflow-x: hidden;
-
-    width: 640px;
-    height: inherit;
+    padding: var(--medium-padding);
+    overflow: visible;
     z-index: 1;
 }
 #wavemedium-reflected {
@@ -132,26 +168,26 @@ input[type=number] {
 }
 
 
-.slider {
+#slidercover {
     float: right;
     margin: 0;
-    width: 50%;
-    height: 20px;
+    width: calc(var(--dotdimensions) + var(--slidercoverwidth) + var(--medium-width)/2);
+    height: 1rem;
     background: #d3d3d3;
     opacity: 0.7;
     transform: rotate(180deg)
 }
 
-.slider::-webkit-slider-thumb {
+#slidercover::-webkit-slider-thumb {
   appearance: none;
-  width: 20px;
+  width: 1.2rem;
   height: inherit;
   background: #0ead86;
   cursor: pointer;
 }
 
-.slider::-moz-range-thumb {
-  width: 20px;
+#slidercover::-moz-range-thumb {
+  width: 1.2rem;
   height: inherit;
   background: #0ead86;
   cursor: poinrgb(96, 201, 162)

@@ -1,8 +1,7 @@
 const controlWaveButton = document.getElementById("controlWaveButton")
 const draggablecover = document.getElementById("draggablecover")
-const slidercover = document.getElementById("slidercover")
-
-
+const draggablecoversum = document.getElementById("draggablecover-sum")
+const strlenmeters = document.getElementById('L')
 const medium = document.getElementById("wavemedium")
 const mediumreflected = document.getElementById("wavemedium-reflected")
 const mediumsum = document.getElementById("wavemedium-sum")
@@ -17,14 +16,15 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+const totalstrlenmeters = 4 //m
+const gapdotdistance = 0.3 //rem, (dot width + dot gap)
 const datapoints = 160
 var indexOfLastDot = datapoints - 1
 
-var a = 50
-var f = 20
+var a = 2
+var f = 3.1416
 var omega = (2*Math.PI)*f
 var wavespeed = 10
-const minwavespeed = 10
 
 var loop = true
 var t = 0
@@ -42,47 +42,80 @@ function generateDots() {
     }
 
 
-} generateDots()
+}
 
-const cycles = document.getElementById("cycles")
-const freal = document.getElementById("freal")
-const fratio = document.getElementById("fratio")
+function generateAxis(totalMeters) {
+    const axes = document.getElementsByClassName("axis")
+    console.log(axes)
+    for (const axis of axes) {
+        axis.textContent = ''
+        let mrk1multiplier = 1
+        for (let i = 0; i < 15; i++) {
+            if ((i+1)%4 === 0) {
+                const mrk = document.createElement('mrk1')
+                const n = document.createElement('n')
+                n.textContent = `${(totalMeters/4)*mrk1multiplier++}m`
+                axis.appendChild(mrk)
+                mrk.appendChild(n)
+                continue
+            }
+            const mrk = document.createElement('mrk2')
+            axis.appendChild(mrk)
+            
+            if ((i+1)%2 === 0) {
+                const n = document.createElement('n')
+                n.textContent = `${(totalMeters/4)*(mrk1multiplier-1) + (totalMeters/8)}`
+                mrk.appendChild(n)
+            }
+        }
+    }
+}
+
+function generateSliderCover() {
+    const slidercover = document.createElement("input")
+    slidercover.type = 'range'
+    slidercover.id = 'slidercover'
+    slidercover.min = 1
+    slidercover.value = 1
+    slidercover.max = `${gapdotdistance+ 1 + (datapoints/2)*gapdotdistance}`
+    slidercover.step = `${gapdotdistance}`
+
+    slidercover.addEventListener("input", () => {
+        let value = slidercover.value
+        
+        indexOfLastDot = datapoints - Math.ceil((value-1)/gapdotdistance) //minus 1 just in case
+        if (indexOfLastDot > datapoints - 1) indexOfLastDot = datapoints - 1
+
+        draggablecover.style.width = `${value}rem`
+        draggablecoversum.style.width = `${value}rem`
+        let len = ((indexOfLastDot+1)*(totalstrlenmeters/datapoints)).toFixed(3)
+        //if len = one of the tick marks, then make it equal to that value
+        strlenmeters.textContent = `${len}m`
+    });
+
+    document.getElementById('container-main').appendChild(slidercover)
+}
+/*STARTUP*/
+generateDots();
+generateAxis(totalstrlenmeters);
+generateSliderCover();
 
 async function animate() {
     var sine = 0
     var sine2 = 0
     var sum = 0
     let reflect = -1 //fixed end = -1, free end = 1
-    //var start = new Date();
-    var totalcycles = 0
-    var previouselapsed = 0
-    var previousinterval = 0
+    
+
 
     while(loop == true) {
-        /*
-        if (sine === 0) {
-            var elapsed = new Date() - start;
-            var interval = elapsed - previouselapsed
-            console.log(previousinterval)
-
-        if (interval > 1+previousinterval/1.2) {
-            var freq = (1/(interval/1000)).toFixed(2)
-            cycles.textContent = `${++totalcycles}`
-            freal.textContent = `${freq} Hz`
-            fratio.textContent = f / freq
-            
-            previouselapsed = elapsed
-            previousinterval = interval
-            }
-        }
-        */
         await sleep(wavespeed)
         t++
-        sine = Math.floor(a*Math.sin((-2*Math.PI)*f*(t/1000)))
-        dots[0].style.translate = `0px ${sine}px`
+        sine = a*Math.sin((-2*Math.PI)*f*(t/1000)).toFixed(18) //18 decimal places were tested to give best accuracy
+        dots[0].style.translate = `0rem ${sine}rem`
 
-        sine2 = parseInt(dots[indexOfLastDot].style.translate.slice(4,))
-        dots2[indexOfLastDot].style.translate = `0px ${reflect*sine2}px`
+        sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,))
+        dots2[indexOfLastDot].style.translate = `0rem ${reflect*sine2}rem`
 
         for (let i = indexOfLastDot; i > 0; i--) {
             dots[i].style.translate = dots[i-1].style.translate
@@ -93,26 +126,18 @@ async function animate() {
         }
 
         for (let i = 0; i < indexOfLastDot; i++) {
-            sum = parseInt(dots2[i].style.translate.slice(4,))
+            sum = parseFloat(dots2[i].style.translate.slice(4,))
             if (isNaN(sum)) {
-                sum = parseInt(dots[i].style.translate.slice(4,))
+                sum = parseFloat(dots[i].style.translate.slice(4,))
                 }
             else {
-                sum += parseInt(dots[i].style.translate.slice(4,))
+                sum += parseFloat(dots[i].style.translate.slice(4,))
             }
-            dotsum[i].style.translate = `0px ${sum}px`
+            dotsum[i].style.translate = `0rem ${sum}rem`
         }
         
     }
 }
-
-slidercover.addEventListener("input", () => {
-    let value = slidercover.value
-    draggablecover.style.width = `${value}px`
-    indexOfLastDot = datapoints - Math.ceil((value-18)/4) + 1 //minus 1 just in case
-    if (indexOfLastDot > 159) indexOfLastDot = 159
-});
-
 
 controlWaveButton.addEventListener("click", () => {
     if (controlWaveButton.textContent == "END WAVE") {
@@ -131,6 +156,7 @@ resetWaveButton.addEventListener("click", async () => {
     await sleep(wavespeed + 100)
     medium.textContent = ''
     mediumreflected.textContent = ''
+    mediumsum.textContent = ''
     t = 0
     await sleep(wavespeed + 100)
     generateDots()

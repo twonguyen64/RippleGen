@@ -20,17 +20,34 @@
                     <div id="wavemedium-sum"></div>
                     <div class="draggablecover" id="draggablecover-sum"></div>
                 </div>
-                <div class="axis"></div>
+                <div class="axis">
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>
+                    <mrk1><n>1m</n></mrk1>
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>  
+                    <mrk1><n>2m</n></mrk1>
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>  
+                    <mrk1><n>3m</n></mrk1>
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>
+                        <mrk2></mrk2>  
+                </div>
             </div>
 
-            <div class="container">
+            <div class="container" id="container-main">
                 <div class="tube">
                     <div id="wavemedium"></div>
                     <div id="wavemedium-reflected"></div>
-                    <div class="draggablecover" id="draggablecover"></div>
+                    <div class="draggablecover" id="draggablecover">
+                        <n id="L"></n>
+                    </div>
                 </div>
                 <div class="axis"></div>
-                <input type="range" min="16" max="324" value="18" class="slider" id="slidercover">
             </div>
         </div>
         
@@ -42,16 +59,16 @@
             <div id="parameters">
                 <div class="parameter">
                     <label>Frequency</label>
-                    <input type="range" min="1" max="50" value="20"
+                    <input type="range" min="3.1416" max="15.708"  step="1.5708"
                         class="parameter-slider" id="f">
                     <div>
                         <input type="number"  min="1" max="100" value="20"
                         class="number-input" id="f-box">
-                        <label>Hz</label>
+                        <label>s</label>
                     </div>
                 </div>
                 <div class="parameter">
-                    <label>Wavespeed</label>
+                    <label>Time</label>
                     <input type="range" min="10" max="60" value="10"
                         class="parameter-slider" id="v">
                     <input type="number" min="10" max="60" value="10"
