@@ -9,8 +9,12 @@
 <body>
     <div id="main">
         <div id="waveactivity">
-
-            <div class="container">
+            <div id="sim-selector">
+                <div class="sim-type selected" id="standingwave">Standing Wave Simulator</div>
+                <div class="sim-type" id="waveinterfere">Wave Interference Simulator</div>
+                <div class="sim-type" id="mediacompare">Media Comparison Simulator</div>
+            </div>
+            <div class="container" id="resultant-wave">
                 <div class="tube">
                     <div class="medium" id="wavemedium-sum"></div>
                     <div class="draggablecover" id="draggablecover-sum"></div>
@@ -19,7 +23,7 @@
             </div>
 
             <div class="container" id="container-main">
-                <div class="tube">
+                <div class="tube" id="tube-main">
                     <div class="medium" id="wavemedium"></div>
                     <div class="medium" id="wavemedium-reflected"></div>
                     <div class="draggablecover" id="draggablecover">
@@ -28,6 +32,7 @@
                     </div>
                 </div>
                 <div class="axis"></div>
+                <div class="axis hide" id="axis-extension"></div>
             </div>
         </div>
         
@@ -38,13 +43,23 @@
             </div>
             <div id="parameters">
                 <div class="parameter">
-                    <label>Frequency</label>
-                    <input type="range" min="3.1416" max="15.708" value="3.1416" step="1.5708"
+                    <label>Frequency (Source)</label>
+                    <input type="range" min="1" max="20" value="5" step="1"
                         class="parameter-slider" id="f">
                     <div>
-                        <label id="f-box"></label>
+                        <label id="f-box">5 Hz</label>
                     </div>
                 </div>
+
+                <div class="parameter hide" id="f2-parameter">
+                    <label>Frequency (Wave 2)</label>
+                    <input type="range" min="1" max="20" value="5" step="1"
+                        class="parameter-slider" id="f2">
+                    <div>
+                        <label id="f2-box">5 Hz</label>
+                    </div>
+                </div>
+
                 <div class="parameter">
                     <label>Simulation Speed</label>
                     <input type="range" min="0.125" max="1" value="1" step="0.125"
@@ -55,6 +70,29 @@
                         <label>x</label>
                     </div>
                 </div>
+                <div class="hide" id="media-vrange" style="display: flex; flex-flow: row; gap: 1rem;">
+                    <div class="parameter" style="border: 0.2rem solid blue;">
+                        <label>Medium 1 Speed</label>
+                        <input type="range" min="1" max="20" value="10" step="1"
+                            class="parameter-slider" id="v">
+                        <div>
+                            <input type="number" min="1" max="20" value="10"
+                            class="number-input" id="v-box">
+                            <label>m/s</label>
+                        </div>
+                    </div>
+                    <div class="parameter" style="border: 0.2rem solid red;">
+                        <label>Medium 2 Speed</label>
+                        <input type="range" min="1" max="20" value="5" step="1"
+                            class="parameter-slider" id="v2">
+                        <div>
+                            <input type="number" min="1" max="20" value="5"
+                            class="number-input" id="v2-box">
+                            <label>m/s</label>
+                        </div>
+                    </div>
+                </div> 
+                
             </div>
         </div>
     </div>
