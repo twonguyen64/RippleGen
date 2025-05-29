@@ -27,51 +27,82 @@
                     <div class="medium" id="wavemedium"></div>
                     <div class="medium" id="wavemedium-reflected"></div>
                     <div class="draggablecover" id="draggablecover">
-                        <n id="L"></n>
-                        <n id="L-lambda"></n>
+                        <div id="stringlenwrapper" style="height: inherit; width: inherit;">
+                            <n id="L"></n>
+                            <n id="L-lambda"></n>
+                        </div>
                     </div>
                 </div>
                 <div class="axis"></div>
-                <div class="axis hide" id="axis-extension"></div>
+                <div class="axis none" id="axis-extension"></div>
+                <div class="none" id="media-boundary"></div>
+                <div id="slidercover-wrapper"></div>
             </div>
         </div>
         
         <div id="controlpanel">
-            <div id="control">
+            <div>
                 <button id="controlWaveButton">SEND WAVE</button>
                 <button id="resetWaveButton">RESET</button>
             </div>
             <div id="parameters">
-                <div class="parameter">
-                    <label>Frequency (Source)</label>
-                    <input type="range" min="1" max="20" value="5" step="1"
-                        class="parameter-slider" id="f">
-                    <div>
-                        <label id="f-box">5 Hz</label>
+                <div class="outer-control">
+                    <label>Wave 1 (Source)</label>
+                    <div class="control">
+                        <parameter>
+                            <input type="range" min="1" max="20" value="5" step="1"
+                                class="parameter-slider" id="f">
+                            <div>
+                                <label id="f-box">5 Hz</label>
+                            </div>
+                        </parameter>
+                        <parameter>
+                            <input type="range" min="0" max="360" value="0" step="1"
+                                class="parameter-slider" id="phase">
+                            <div>
+                                <label id="phase-box">0°</label>
+                            </div>
+                        </parameter>
+                        <parameter>
+                            <input type="range" min="0" max="4" value="3" step="0.1"
+                                class="parameter-slider" id="amp">
+                            <div>
+                                <label id="amp-box">3</label>
+                            </div>
+                        </parameter>
+                    </div>
+                </div>
+                
+                <div class="outer-control none" id="wave2">
+                    <label>Wave 2</label>
+                    <div class="control">
+                        <parameter id="f2-parameter">
+                            <input type="range" min="1" max="20" value="5" step="1"
+                                class="parameter-slider" id="f2">
+                            <div>
+                                <label id="f2-box">5 Hz</label>
+                            </div>
+                        </parameter>
+                        <parameter>
+                            <input type="range" min="0" max="360" value="0" step="1"
+                                class="parameter-slider" id="phase2">
+                            <div>
+                                <label id="phase2-box">0°</label>
+                            </div>
+                        </parameter>
+                        <parameter>
+                            <input type="range" min="0" max="4" value="3" step="0.1"
+                                class="parameter-slider" id="amp2">
+                            <div>
+                                <label id="amp2-box">3</label>
+                            </div>
+                        </parameter>
                     </div>
                 </div>
 
-                <div class="parameter hide" id="f2-parameter">
-                    <label>Frequency (Wave 2)</label>
-                    <input type="range" min="1" max="20" value="5" step="1"
-                        class="parameter-slider" id="f2">
-                    <div>
-                        <label id="f2-box">5 Hz</label>
-                    </div>
-                </div>
-
-                <div class="parameter">
-                    <label>Simulation Speed</label>
-                    <input type="range" min="0.125" max="1" value="1" step="0.125"
-                        class="parameter-slider" id="t">
-                    <div>
-                        <input type="number" min="0.125" max="1" value="1" step="0.125"
-                        class="number-input" id="t-box">
-                        <label>x</label>
-                    </div>
-                </div>
-                <div class="hide" id="media-vrange" style="display: flex; flex-flow: row; gap: 1rem;">
-                    <div class="parameter" style="border: 0.2rem solid blue;">
+                
+                <div class="spec-control none" id="media-vrange" style="display: flex; flex-flow: row; gap: 1rem;">
+                    <parameter style="border: 0.2rem solid blue;" id="v-parameter">
                         <label>Medium 1 Speed</label>
                         <input type="range" min="1" max="20" value="10" step="1"
                             class="parameter-slider" id="v">
@@ -80,8 +111,8 @@
                             class="number-input" id="v-box">
                             <label>m/s</label>
                         </div>
-                    </div>
-                    <div class="parameter" style="border: 0.2rem solid red;">
+                    </parameter>
+                    <parameter style="border: 0.2rem solid red;">
                         <label>Medium 2 Speed</label>
                         <input type="range" min="1" max="20" value="5" step="1"
                             class="parameter-slider" id="v2">
@@ -90,8 +121,19 @@
                             class="number-input" id="v2-box">
                             <label>m/s</label>
                         </div>
-                    </div>
+                    </parameter>
                 </div> 
+
+                <div class="outer-control">
+                    <label>Simulation <br> Speed</label>
+                    <div class="control">
+                            <parameter>
+                            <input type="range" min="0.125" max="1" value="1" step="0.125"
+                                class="parameter-slider" id="t">
+                            <label id="t-box">1x</label>
+                        </parameter>
+                    </div>
+                </div>
                 
             </div>
         </div>

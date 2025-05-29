@@ -73,6 +73,8 @@ function generateAxis(totalMeters, isThereExtension) {
 }
 
 function generateSliderCover() {
+    document.getElementById('slidercover-wrapper').textContent = ''
+
     const slidercover = document.createElement("input")
     slidercover.type = 'range'
     slidercover.id = 'slidercover'
@@ -80,14 +82,11 @@ function generateSliderCover() {
     slidercover.value = 1
     slidercover.max = `${gapdotdistance+ 1 + (datapoints/2)*gapdotdistance}`
     slidercover.step = `${gapdotdistance}`
-    strlenmeters.textContent = `${totalstrlenmeters}m`
-    strlenlambda.textContent = `${(f).toFixed(2)}λ`
 
     slidercover.addEventListener("input", () => {
         let value = slidercover.value   
         indexOfLastDot = parseInt(datapoints - (value-1)/gapdotdistance) //minus 1 just in case
         if (indexOfLastDot > datapoints - 1) indexOfLastDot = datapoints - 1
-
 
         draggablecover.style.width = `${value}rem`
         draggablecoversum.style.width = `${value}rem`
@@ -95,6 +94,7 @@ function generateSliderCover() {
         strlenmeters.textContent = `${len}m`
         strlenlambda.textContent = `${(f*len/(4*totalstrlenmeters) ).toFixed(2)}λ`
 
+        //for disappearing axis labels:
         let round = datapoints/(divisions)
         let num = Math.ceil((indexOfLastDot-(round/2)) / round) * round
         
@@ -117,8 +117,7 @@ function generateSliderCover() {
             }
         }
     });
-
-    document.getElementById('container-main').appendChild(slidercover)
+    document.getElementById('slidercover-wrapper').appendChild(slidercover)
 }
 
 async function resetWave() {
@@ -127,9 +126,20 @@ async function resetWave() {
     medium.textContent = ''
     mediumreflected.textContent = ''
     mediumsum.textContent = ''
+
     t = 0
-    if (mode === 'mediacompare') u = 0
+    u = 0
+    if (mode === 'mediacompare')
+    document.getElementById('v-parameter').classList.remove('unclickable')
+
     indexOfLastDot = datapoints - 1
+    
+    draggablecover.style.width = '1rem'
+    draggablecoversum.style.width = '1rem'
+    strlenmeters.textContent = `${totalstrlenmeters}m`
+    let len = ((indexOfLastDot+1)*(totalstrlenmeters/datapoints)).toFixed(2)
+    strlenlambda.textContent = `${(f*len/(4*totalstrlenmeters) ).toFixed(2)}λ`
+
     await sleep(delay + 100)
     
     for (let i = 0; i < datapoints; i++) {
@@ -144,6 +154,7 @@ async function resetWave() {
     }
 
     controlWaveButton.textContent = "SEND WAVE";
+
 }
 
 /*STARTUP*/
@@ -186,7 +197,7 @@ async function animateStandingWave() {
         }
         
         
-        for (let i = 0; i < indexOfLastDot; i++) {
+        for (let i = 0; i < indexOfLastDot+1; i++) {
             sum = parseFloat(dots2[i].style.translate.slice(4,))
             if (isNaN(sum)) {
                 sum = parseFloat(dots[i].style.translate.slice(4,))
@@ -200,19 +211,20 @@ async function animateStandingWave() {
 }
 
 async function animateMedia() {
+    document.getElementById('v-parameter').classList.add('unclickable')
     while (loop === true) {
         await sleep(delay)
-        let limit = Math.floor(v * t); // number of dots reached by the wave
-        let limit2 = Math.floor(v * u);
+        let limit = Math.ceil(v * t); // number of dots reached by the wave
+        let limit2 = Math.ceil(v * u);
 
-        if (limit >= indexOfLastDot) {
+        if (limit > indexOfLastDot) {
             limit = indexOfLastDot;
 
-            if (limit2 >= indexOfLastDot) limit2 = indexOfLastDot;
+            if (limit2 > indexOfLastDot) limit2 = indexOfLastDot;
 
             let y = 0
-            for (let i = 0; i < limit2; i++) {
-                let sine2 = -1* a * Math.sin(2 * Math.PI * f/100 * (t - (y+indexOfLastDot)/v2));
+            for (let i = 0; i < limit2 + 1; i++) {
+                let sine2 = -1* a * Math.sin(2 * Math.PI * f/100 * (u - (y)/v2));
                 dots2[i].style.translate = `0rem ${sine2}rem`;
                 y++
             }
@@ -220,7 +232,7 @@ async function animateMedia() {
         }
 
         let x = 0
-        for (let i = 0; i < limit; i++) {
+        for (let i = 0; i < limit + 1; i++) {
             let sine = -1 * a * Math.sin(2 * Math.PI * f/100 * (t - x/v));
             dots[i].style.translate = `0rem ${sine}rem`;
             x++
@@ -234,7 +246,8 @@ async function animateMedia() {
 async function animateCollision() {
     var sine = 0
     var sine2 = 0
-    var sum = 0
+    var sum1 = 0
+    var sum2 = 0
     var k = 1 //damping
     const reflect = -1 //fixed end = -1, free end = 1
 
@@ -258,14 +271,12 @@ async function animateCollision() {
 
         
         
-        for (let i = 0; i < indexOfLastDot; i++) {
-            sum = parseFloat(dots2[i].style.translate.slice(4,))
-            if (isNaN(sum)) {
-                sum = parseFloat(dots[i].style.translate.slice(4,))
-                }
-            else {
-                sum += parseFloat(dots[i].style.translate.slice(4,))
-            }
+        for (let i = 0; i <= indexOfLastDot; i++) {
+            let sum = 0
+            sum1 = parseFloat(dots[i].style.translate.slice(4,))
+            sum2 = parseFloat(dots2[i].style.translate.slice(4,))
+            if (!isNaN(sum1)) sum += sum1
+            if (!isNaN(sum2)) sum += sum2
             dotsum[i].style.translate = `0rem ${sum}rem`
         }
     }
@@ -300,7 +311,7 @@ controlWaveButton.addEventListener("click", () => {
 resetWaveButton.addEventListener("click", resetWave);
 
 const simselector = document.getElementById('sim-selector')
-simselector.addEventListener(('click'), (e) => {
+simselector.addEventListener(('click'), async (e) => {
     for (simtype of simselector.getElementsByClassName('sim-type')) {
         if (e.target.id === simtype.id) {
             simtype.classList.add('selected')
@@ -311,47 +322,50 @@ simselector.addEventListener(('click'), (e) => {
     }
 
     if (e.target.id === 'standingwave' || e.target.id === 'waveinterfere') {
-        document.documentElement.style.setProperty('--numberofdots', '160');
         datapoints = 160
-        document.getElementById('axis-extension').classList.add('hide')
-        document.getElementById('media-vrange').classList.add('hide')
-        resetWave()
-        generateAxis(totalstrlenmeters, false);
+        await resetWave()
+        document.documentElement.style.setProperty('--datapoints', `${datapoints}`);
+        await generateAxis(totalstrlenmeters, false);
 
-        document.getElementById('resultant-wave').classList.remove('hide')
-        document.getElementById('slidercover').classList.remove('hide')
+        document.getElementById('axis-extension').classList.add('none')
+        document.getElementById('media-boundary').classList.add('none')
+        document.getElementById('media-vrange').classList.add('none')
+        
+        document.getElementById('resultant-wave').classList.remove('none')
+        document.getElementById('slidercover').classList.remove('none')
         document.getElementById('container-main').classList.remove('side-by-side')
         medium.classList.remove('relative')
         mediumreflected.classList.remove('relative')
     }
-    document.getElementById('f2-parameter').classList.add('hide')
+    document.getElementById('wave2').classList.add('none')
     
     if (e.target.id === 'waveinterfere') {
-        document.getElementById('slidercover').classList.add('hide')
-        document.getElementById('f2-parameter').classList.remove('hide')
+        document.getElementById('slidercover').classList.add('none')
+        document.getElementById('wave2').classList.remove('none')
+        document.getElementById('stringlenwrapper').classList.add('none')
     }
     else if (e.target.id === 'mediacompare') {
-        document.documentElement.style.setProperty('--numberofdots', '120');
         datapoints = 120
-        resetWave()
+        await resetWave()
+        document.documentElement.style.setProperty('--datapoints', '120');
 
         const containermain = document.getElementById('container-main')
+        document.getElementById('axis-extension').classList.remove('none')
+        document.getElementById('media-boundary').classList.remove('none')
+        document.getElementById('media-vrange').classList.remove('none')
 
-        document.getElementById('axis-extension').classList.remove('hide')
-        document.getElementById('media-vrange').classList.remove('hide')
-
-        document.getElementById('resultant-wave').classList.add('hide')
-        document.getElementById('slidercover').classList.add('hide')
+        document.getElementById('resultant-wave').classList.add('none')
+        document.getElementById('slidercover').classList.add('none')
         containermain.classList.add('side-by-side')
         medium.classList.add('relative')
         mediumreflected.classList.add('relative')
         mediumreflected.classList.add('tube-gap')
+        document.getElementById('stringlenwrapper').classList.add('none')
         
-        generateAxis(totalstrlenmeters, true);
-
-        const mediaboundary = document.createElement('div')
-            mediaboundary.id = 'mediaboundary'
-            containermain.appendChild(mediaboundary)
+        await generateAxis(totalstrlenmeters, true);
+    }
+    else {
+        document.getElementById('stringlenwrapper').classList.remove('none')
     }
 
 })
@@ -399,10 +413,6 @@ v2slider.addEventListener('input', (e) => {
 
 
 tslider.addEventListener('input', (e) => {
-    tbox.value = e.target.value;
-    delay = 10/e.target.value 
-});
-tbox.addEventListener('keydown', (e) => {
-    if (e.key === "Enter") tslider.value = e.target.value;
+    tbox.textContent = `${e.target.value}x`;
     delay = 10/e.target.value 
 });
