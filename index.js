@@ -1,5 +1,3 @@
-
-
 const slidercover = document.getElementById('slidercover')
 const draggablecover = document.getElementById("draggablecover")
 const draggablecoversum = document.getElementById("draggablecover-sum")
@@ -15,7 +13,6 @@ const dots2 = document.getElementsByTagName("dot2");
 const dotsum = document.getElementsByTagName("dotsum");
 
 const axes = document.getElementsByClassName("axis")
-
 const parameters = document.getElementById("parameters")
 
 function sleep(ms) {
@@ -31,15 +28,17 @@ var indexOfLastDot = datapoints - 1
 
 var a = 3
 var f = 5
-let f2 = 5
-
 var v = 10
+var phase = 0
+var t = 0
+
+var a2 = 3
+let f2 = 5
 let v2 = 5
+var phase2 = 0
+var u = 0
 
 var delay = 10
-
-var t = 0
-var u = 0 //for wavecompare
 var loop = true
 
 
@@ -166,15 +165,16 @@ async function startup() {
 startup();
 
 async function animateStandingWave() {
-    var sine = 0
-    var sine2 = 0
-    var sum = 0
-    var k = 1 //damping
-    const reflect = -1 //fixed end = -1, free end = 1
+    let sine = 0
+    let sine2 = 0
+    let sum1 = 0
+    let sum2 = 0
+    let k = 1 //damping
+    const reflect = 1 //fixed end = -1, free end = 1
 
     while(loop == true) {
         await sleep(delay)
-        t += 1
+        t++
         //k += 0.005
         sine = (a/k)*Math.sin(((Math.PI*Math.PI))*f*(t/-1000)).toFixed(18) //18 decimal places were tested to give best accuracy
         sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,))
@@ -187,24 +187,19 @@ async function animateStandingWave() {
         dots[0].style.translate = `0rem ${sine}rem`
         dots2[indexOfLastDot].style.translate = `0rem ${reflect*sine2}rem`
 
-        
         for (let i = indexOfLastDot; i > 0; i--) {    
             dots[i].style.translate = dots[i-1].style.translate
         }
-
         for (let i = 0; i < indexOfLastDot; i++) {
             dots2[i].style.translate = dots2[i+1].style.translate
         }
         
-        
         for (let i = 0; i < indexOfLastDot+1; i++) {
-            sum = parseFloat(dots2[i].style.translate.slice(4,))
-            if (isNaN(sum)) {
-                sum = parseFloat(dots[i].style.translate.slice(4,))
-                }
-            else {
-                sum += parseFloat(dots[i].style.translate.slice(4,))
-            }
+            let sum = 0
+            sum1 = parseFloat(dots[i].style.translate.slice(4,))
+            sum2 = parseFloat(dots2[i].style.translate.slice(4,))
+            if (!isNaN(sum1)) sum += sum1
+            if (!isNaN(sum2)) sum += sum2
             dotsum[i].style.translate = `0rem ${sum}rem`
         }
     }
@@ -215,7 +210,7 @@ async function animateMedia() {
     while (loop === true) {
         await sleep(delay)
         let limit = Math.ceil(v * t); // number of dots reached by the wave
-        let limit2 = Math.ceil(v * u);
+        let limit2 = Math.ceil(v2 * u);
 
         if (limit > indexOfLastDot) {
             limit = indexOfLastDot;
@@ -224,7 +219,7 @@ async function animateMedia() {
 
             let y = 0
             for (let i = 0; i < limit2 + 1; i++) {
-                let sine2 = -1* a * Math.sin(2 * Math.PI * f/100 * (u - (y)/v2));
+                let sine2 = -1* a * Math.sin(0.02 * Math.PI * f * (u - y/v2) + phase);
                 dots2[i].style.translate = `0rem ${sine2}rem`;
                 y++
             }
@@ -233,7 +228,7 @@ async function animateMedia() {
 
         let x = 0
         for (let i = 0; i < limit + 1; i++) {
-            let sine = -1 * a * Math.sin(2 * Math.PI * f/100 * (t - x/v));
+            let sine = -1 * a * Math.sin(0.02 * Math.PI * f * (t - x/v) + phase);
             dots[i].style.translate = `0rem ${sine}rem`;
             x++
         }
@@ -248,15 +243,13 @@ async function animateCollision() {
     var sine2 = 0
     var sum1 = 0
     var sum2 = 0
-    var k = 1 //damping
     const reflect = -1 //fixed end = -1, free end = 1
 
     while(loop == true) {
         await sleep(delay)
         t += 1
-        //k += 0.005
-        sine = (a/k)*Math.sin(((Math.PI*Math.PI))*f*(t/-1000)).toFixed(18)
-        sine2 = (a/k)*Math.sin(((Math.PI*Math.PI))*f2*(t/-1000)).toFixed(18) 
+        sine = a*Math.sin(((Math.PI*Math.PI))*f*(t/-1000) + phase).toFixed(18)
+        sine2 = a2*Math.sin(((Math.PI*Math.PI))*f2*(t/-1000) + phase2).toFixed(18) 
 
         dots[0].style.translate = `0rem ${sine}rem`
         dots2[indexOfLastDot].style.translate = `0rem ${sine2}rem`
@@ -286,13 +279,13 @@ const controlWaveButton = document.getElementById("controlWaveButton")
 const resetWaveButton = document.getElementById("resetWaveButton")
 
 controlWaveButton.addEventListener("click", () => {
-    if (controlWaveButton.textContent == "END WAVE") {
+    if (controlWaveButton.textContent == "STOP WAVE") {
         loop = false;
         controlWaveButton.textContent = "SEND WAVE";
     }
     else {
         loop = true;
-        controlWaveButton.textContent = "END WAVE";
+        controlWaveButton.textContent = "STOP WAVE";
 
         switch (mode) {
             case 'standingwave':
@@ -324,13 +317,15 @@ simselector.addEventListener(('click'), async (e) => {
     if (e.target.id === 'standingwave' || e.target.id === 'waveinterfere') {
         datapoints = 160
         await resetWave()
+        medium.style.backgroundColor = ''
+        mediumreflected.style.backgroundColor = ''
         document.documentElement.style.setProperty('--datapoints', `${datapoints}`);
         await generateAxis(totalstrlenmeters, false);
 
         document.getElementById('axis-extension').classList.add('none')
         document.getElementById('media-boundary').classList.add('none')
         document.getElementById('media-vrange').classList.add('none')
-        
+
         document.getElementById('resultant-wave').classList.remove('none')
         document.getElementById('slidercover').classList.remove('none')
         document.getElementById('container-main').classList.remove('side-by-side')
@@ -361,6 +356,9 @@ simselector.addEventListener(('click'), async (e) => {
         mediumreflected.classList.add('relative')
         mediumreflected.classList.add('tube-gap')
         document.getElementById('stringlenwrapper').classList.add('none')
+
+        medium.style.backgroundColor = `rgba(49, 90, 226, ${0.35 - (0.018)*v})`
+        mediumreflected.style.backgroundColor = `rgba(226, 90, 49, ${0.35 - (0.018)*v2})`
         
         await generateAxis(totalstrlenmeters, true);
     }
@@ -373,16 +371,24 @@ simselector.addEventListener(('click'), async (e) => {
 
 const fslider = document.getElementById("f")
 const fbox = document.getElementById("f-box")
+const phaseslider = document.getElementById("phase")
+const phasebox = document.getElementById("phase-box")
+const ampslider = document.getElementById("amp")
+const ampbox = document.getElementById("amp-box")
+const vslider = document.getElementById("v")
+const vbox = document.getElementById("v-box")
+
 const f2slider = document.getElementById("f2")
 const f2box = document.getElementById("f2-box")
+const phase2slider = document.getElementById("phase2")
+const phase2box = document.getElementById("phase2-box")
+const amp2slider = document.getElementById("amp2")
+const amp2box = document.getElementById("amp2-box")
+const v2slider = document.getElementById("v2")
+const v2box = document.getElementById("v2-box")
 
 const tslider = document.getElementById("t")
 const tbox = document.getElementById("t-box")
-
-const vslider = document.getElementById("v")
-const vbox = document.getElementById("v-box")
-const v2slider = document.getElementById("v2")
-const v2box = document.getElementById("v2-box")
 
 fslider.addEventListener('input', (e) => {
     f = e.target.value
@@ -390,25 +396,40 @@ fslider.addEventListener('input', (e) => {
     let len = ((indexOfLastDot+1)*(totalstrlenmeters/datapoints))
     strlenlambda.textContent = `${(f*len/(4*totalstrlenmeters) ).toFixed(2)}λ`
 });
-
 f2slider.addEventListener('input', (e) => {
     f2 = e.target.value
     f2box.textContent = `${e.target.value} Hz`
 });
-/*
-fbox.addEventListener('keydown', (e) => {
-    if (e.key === "Enter") vslider.value = e.target.value;
-    f = e.target.value
+
+phaseslider.addEventListener('input', (e) => {
+    phase = e.target.value*(Math.PI/180)
+    phasebox.textContent = `+${e.target.value}°`
 });
-*/
+phase2slider.addEventListener('input', (e) => {
+    phase2 = e.target.value*(Math.PI/180)
+    phase2box.textContent = `+${e.target.value}°`
+});
+
+ampslider.addEventListener('input', (e) => {
+    a = e.target.value
+    ampbox.textContent = `${e.target.value} units`
+});
+amp2slider.addEventListener('input', (e) => {
+    a2 = e.target.value
+    amp2box.textContent = `${e.target.value} units`
+});
+
+
 
 vslider.addEventListener('input', (e) => {
     v = e.target.value
     vbox.value = v;
+    medium.style.backgroundColor = `rgba(49, 90, 226, ${0.35 - (0.018)*v})`
 });
 v2slider.addEventListener('input', (e) => {
     v2 = e.target.value
     v2box.value = v2;
+    mediumreflected.style.backgroundColor = `rgba(226, 90, 49, ${0.35 - (0.018)*v2})`
 });
 
 

@@ -127,14 +127,36 @@
                 <div class="outer-control">
                     <label>Simulation <br> Speed</label>
                     <div class="control">
-                            <parameter>
+                        <parameter>
                             <input type="range" min="0.125" max="1" value="1" step="0.125"
                                 class="parameter-slider" id="t">
                             <label id="t-box">1x</label>
                         </parameter>
                     </div>
                 </div>
-                
+                <div class="outer-control hide">
+                    <label>Properties</label>
+                    <div class="control" style="flex-flow: column;">
+                        <parameter class="parameter-option flexrow">
+                            <input type="range" min="0" max="1" value="1" step="0.125"
+                                class="parameter-slider sideways" id="damping">
+                            <label id="damping-box" style="text-wrap: nowrap;">0x damping</label>
+                        </parameter>
+                        <parameter class="parameter-option flexrow">
+                            <div class="flexrow" id="reflect-box">
+                                <div class="parameter-butt">Fixed End</div>
+                                <div class="parameter-butt">Free End</div>
+                            </div>
+                        </parameter>
+                        <parameter class="parameter-option flexrow alignright">
+                            <label id="2x-reflect-box">Reflect on both sides?</label>
+                            <div class="flexrow" id="2x-reflect-box">
+                                <div class="parameter-butt">Yes</div>
+                                <div class="parameter-butt">No</div>
+                            </div>
+                        </parameter>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

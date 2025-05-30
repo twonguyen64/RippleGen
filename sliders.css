@@ -1,0 +1,86 @@
+@import url("constants.css");
+
+#slidercover {
+    float: right;
+    margin: 0;
+    width: calc(var(--dotdimensions)*4 + var(--slidercoverwidth) + var(--medium-width)/2);
+    height: 1rem;
+    background: rgb(192, 201, 198);
+    opacity: 0.7;
+    transform: rotate(180deg);
+    z-index: 2;
+}
+
+#slidercover::-webkit-slider-thumb {
+    appearance: none;
+    width: 1.2rem;
+    height: inherit;
+    background: var(--colour1);
+    border-bottom: 0.2rem black solid;
+    cursor: pointer;
+}
+
+#slidercover::-moz-range-thumb {
+    width: 1.2rem;
+    height: inherit;
+    background: var(--colour1);
+    border-top: 0.2rem black solid;
+    cursor: poinrgb(96, 201, 162)
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+
+.parameter-slider::-webkit-slider-runnable-track {
+    background: var(--colour2);
+    width: 0.4rem;
+    border: none;
+}
+.parameter-slider::-moz-range-track {
+    background: var(--colour2);
+    width: 0.4rem;
+    border: none;
+}
+.parameter-slider::-ms-track {
+    background: var(--colour2);
+    width: 0.4rem;
+    color: transparent;
+}
+.parameter-slider.sideways::-moz-range-track {
+    height: calc(var(--parameterslider-thicc) - 0.1rem);
+    width: 100%;
+}
+.parameter-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #242424; /* Example thumb color */
+    border: 0.1rem solid #1d1d1d;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+    margin-top: -5px; /* Adjust to center the thumb on the track for vertical sliders */
+}
+
+.parameter-slider::-moz-range-thumb {
+    background: #242424; /* Example thumb color */
+    border: 0.1rem solid #1d1d1d;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}
+
+.parameter-slider::-ms-thumb {
+    background: #242424;
+    border: 0.1rem solid #1d1d1d;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}

@@ -219,7 +219,7 @@ dotsum {background-color: var(--resultantwavecolour);}
 
 parameter{
     display: flex;
-    flex-direction: column;
+    flex-flow: column;
     width: 2.5rem;
     gap: 0.5rem;
     padding: 0.2rem;
@@ -228,20 +228,42 @@ parameter{
 }
 .spec-control > parameter {
     width: fit-content;
+    min-width: 5rem !important;
 }
 .parameter-slider{
     writing-mode: vertical-lr;
     direction: rtl;
     appearance: slider-vertical;
-    height: 6rem;
-    width: 0.5rem;
+    height: var(--parameterslider-length);
+    width: var(--parameterslider-thicc);
     border: 0.1rem solid #313131;
     vertical-align: bottom;
     outline: none;
+}
+.parameter-slider.sideways{
+    writing-mode: horizontal-tb; 
+    width: var(--parameterslider-length); 
+    height: var(--parameterslider-thicc);
+    margin-bottom: 0.8rem;
 }
 .number-input{
     width: 2.5rem;
     text-align: right;
     font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     font-weight: bold;
+}
+.parameter-option{
+    width: fit-content;
+}
+.flexrow{
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+}
+.parameterbutt{
+    justify-content: space-evenly;
+}
+.flexrow.alignright {
+    justify-content: flex-end;
+    
 }

@@ -7,7 +7,6 @@
     --medium-width: calc((var(--dotdimensions) + var(--dotgap))*var(--datapoints));
     --medium-padding: 2px;
     --slidercoverwidth: 1rem;
-    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
 
     --backgnd: #e4e2df;
     --colour1: #0ead86;
@@ -18,4 +17,8 @@
     
     font-size: 1.05rem;
     background-color: var(--backgnd);
+    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+
+    --parameterslider-length: 6rem;
+    --parameterslider-thicc: 0.5rem;
 }
