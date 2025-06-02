@@ -38,7 +38,22 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-
+.parameter-slider{
+    writing-mode: vertical-lr;
+    direction: rtl;
+    appearance: slider-vertical;
+    height: var(--parameterslider-length);
+    width: var(--parameterslider-thicc);
+    border: 0.1rem solid #313131;
+    vertical-align: bottom;
+    outline: none;
+}
+.parameter-slider.sideways{
+    writing-mode: horizontal-tb; 
+    direction: ltr;
+    width: calc(var(--parameterslider-length)*1.2); 
+    height: var(--parameterslider-thicc);
+}
 
 .parameter-slider::-webkit-slider-runnable-track {
     background: var(--colour2);

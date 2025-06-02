@@ -42,7 +42,8 @@
         
         <div id="controlpanel">
             <div>
-                <button id="controlWaveButton">SEND WAVE</button>
+                <button id="sendWaveButton">SEND WAVE</button>
+                <button id="pulseWaveButton">SEND PULSE</button>
                 <button id="resetWaveButton">RESET</button>
             </div>
             <div id="parameters">
@@ -134,27 +135,29 @@
                         </parameter>
                     </div>
                 </div>
-                <div class="outer-control hide">
+                <div class="outer-control" id="medium-properties">
                     <label>Properties</label>
-                    <div class="control" style="flex-flow: column;">
-                        <parameter class="parameter-option flexrow">
-                            <input type="range" min="0" max="1" value="1" step="0.125"
-                                class="parameter-slider sideways" id="damping">
-                            <label id="damping-box" style="text-wrap: nowrap;">0x damping</label>
+                    <div class="control" style="flex-flow: column; justify-content: space-evenly;">
+                        <parameter class="parameter-option">
+                            <input type="range" min="0" max="5" value="0" step="0.5"
+                                class="parameter-slider sideways" id="damp">
+                            <a id="damp-box" style="text-wrap: nowrap;">No damping</a>
                         </parameter>
-                        <parameter class="parameter-option flexrow">
-                            <div class="flexrow" id="reflect-box">
-                                <div class="parameter-butt">Fixed End</div>
+                        <parameter class="parameter-option options-text">
+                            <div class="parameter-option-text">Reflection type</div>
+                            <div class="parameter-option text-buttons" id="reflect">
+                                <div class="parameter-butt selected">Fixed End</div>
                                 <div class="parameter-butt">Free End</div>
                             </div>
                         </parameter>
-                        <parameter class="parameter-option flexrow alignright">
-                            <label id="2x-reflect-box">Reflect on both sides?</label>
-                            <div class="flexrow" id="2x-reflect-box">
+                        <parameter class="parameter-option options-text">
+                            <div class="parameter-option-text">Reflect on both sides?</div>
+                            <div class="parameter-option text-buttons" id="reflect2x">
                                 <div class="parameter-butt">Yes</div>
-                                <div class="parameter-butt">No</div>
+                                <div class="parameter-butt selected">No</div>
                             </div>
                         </parameter>
+                        
                     </div>
                 </div>
             </div>

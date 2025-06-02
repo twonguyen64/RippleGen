@@ -15,6 +15,10 @@ const dotsum = document.getElementsByTagName("dotsum");
 const axes = document.getElementsByClassName("axis")
 const parameters = document.getElementById("parameters")
 
+const sendWaveButton = document.getElementById("sendWaveButton")
+const resetWaveButton = document.getElementById("resetWaveButton")
+const pulseWaveButton = document.getElementById("pulseWaveButton")
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -40,7 +44,12 @@ var u = 0
 
 var delay = 10
 var loop = true
+var reflect = -1
+var dmp = 0
+var reflecttwice = 0
 
+var pulseLen = (Math.PI*100)/f
+var tplus = 0 //the time after the last pulse is sent
 
 function generateAxis(totalMeters, isThereExtension) {
     let offset = 0
@@ -128,11 +137,9 @@ async function resetWave() {
 
     t = 0
     u = 0
-    if (mode === 'mediacompare')
-    document.getElementById('v-parameter').classList.remove('unclickable')
+    if (mode === 'mediacompare') document.getElementById('v-parameter').classList.remove('unclickable')
 
     indexOfLastDot = datapoints - 1
-    
     draggablecover.style.width = '1rem'
     draggablecoversum.style.width = '1rem'
     strlenmeters.textContent = `${totalstrlenmeters}m`
@@ -152,7 +159,9 @@ async function resetWave() {
         mediumsum.appendChild(newdot3)
     }
 
-    controlWaveButton.textContent = "SEND WAVE";
+    sendWaveButton.textContent = "SEND WAVE";
+    sendWaveButton.classList.remove('unclickable')
+    pulseWaveButton.classList.remove('unclickable')
 
 }
 
@@ -169,29 +178,43 @@ async function animateStandingWave() {
     let sine2 = 0
     let sum1 = 0
     let sum2 = 0
-    let k = 1 //damping
-    const reflect = 1 //fixed end = -1, free end = 1
-
     while(loop == true) {
-        await sleep(delay)
+        let damping = dmp/50000
         t++
-        //k += 0.005
-        sine = (a/k)*Math.sin(((Math.PI*Math.PI))*f*(t/-1000)).toFixed(18) //18 decimal places were tested to give best accuracy
+        await sleep(delay)
+        
+        sine = a*Math.sin(((Math.PI*Math.PI))*f*(t/-1000)).toFixed(18) //18 decimal places were tested to give best accuracy
         sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,))
 
-        /* Another inteference
-        let sine0reflected = parseFloat(dots2[0].style.translate.slice(4,))
-        if (!isNaN(sine0reflected)) sine += (-0.7*sine0reflected)
-        */
+        //double interference
+        if (reflecttwice === 1) {
+            let sine0reflected = parseFloat(dots2[0].style.translate.slice(4,))
+            if (!isNaN(sine0reflected)) sine += (reflect*sine0reflected)
+        }
 
         dots[0].style.translate = `0rem ${sine}rem`
         dots2[indexOfLastDot].style.translate = `0rem ${reflect*sine2}rem`
 
-        for (let i = indexOfLastDot; i > 0; i--) {    
-            dots[i].style.translate = dots[i-1].style.translate
+        if (dmp === 0) {
+            for (let i = indexOfLastDot; i > 0; i--) {    
+                dots[i].style.translate = dots[i-1].style.translate
+            }
+            for (let i = 0; i < indexOfLastDot; i++) {
+                dots2[i].style.translate = dots2[i+1].style.translate
+            }
         }
-        for (let i = 0; i < indexOfLastDot; i++) {
-            dots2[i].style.translate = dots2[i+1].style.translate
+
+        else {
+            for (let i = indexOfLastDot; i > 0; i--) {  
+                let dampedsine = parseFloat(dots[i-1].style.translate.slice(4,)) * Math.exp(-(i*damping))
+                if (isNaN(dampedsine)) continue
+                dots[i].style.translate = `0rem ${dampedsine}rem`
+            }
+            for (let i = 0; i < indexOfLastDot; i++) {
+                let dampedsine = parseFloat(dots2[i+1].style.translate.slice(4,)) * Math.exp(-(i*damping))
+                if (isNaN(dampedsine)) continue
+                dots2[i].style.translate = `0rem ${dampedsine}rem`
+            }
         }
         
         for (let i = 0; i < indexOfLastDot+1; i++) {
@@ -204,7 +227,80 @@ async function animateStandingWave() {
         }
     }
 }
+async function animateStandingWavePulse() {
+    tplus = 0
+    pulseLen = (Math.PI*100)/f
+    if (loop) {
+        t = 0
+        return
+    }
 
+    let sine = 0
+    let sine2 = 0
+    let sum1 = 0
+    let sum2 = 0
+    loop = true;
+    while(loop == true) {
+        if (tplus > 2*indexOfLastDot ) {
+            t = 0
+            tplus = 0
+            loop = false
+            sendWaveButton.classList.remove('unclickable')
+            return
+        }
+        let damping = dmp/50000
+        await sleep(delay)
+        
+        if (t < pulseLen) {
+            t++
+            sine = a*Math.sin(((Math.PI*Math.PI))*f*(t/-1000)).toFixed(18)
+            //double interference
+            if (reflecttwice === 1) {
+                let sine0reflected = parseFloat(dots2[0].style.translate.slice(4,))
+                if (!isNaN(sine0reflected)) sine += (reflect*sine0reflected)
+            }
+            dots[0].style.translate = `0rem ${sine}rem`
+        }
+        else {
+            dots[0].style.translate = `0rem 0em`
+            tplus++
+        }
+        sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,))
+        if (isNaN(sine2)) sine2 = 0
+        dots2[indexOfLastDot].style.translate = `0rem ${reflect*sine2}rem`
+
+        if (dmp === 0) {
+            for (let i = indexOfLastDot; i > 0; i--) {    
+                dots[i].style.translate = dots[i-1].style.translate
+            }
+            for (let i = 0; i < indexOfLastDot; i++) {
+                dots2[i].style.translate = dots2[i+1].style.translate
+            }
+        }
+
+        else {
+            for (let i = indexOfLastDot; i > 0; i--) {  
+                let dampedsine = parseFloat(dots[i-1].style.translate.slice(4,)) * Math.exp(-(i*damping))
+                if (isNaN(dampedsine)) continue
+                dots[i].style.translate = `0rem ${dampedsine}rem`
+            }
+            for (let i = 0; i < indexOfLastDot; i++) {
+                let dampedsine = parseFloat(dots2[i+1].style.translate.slice(4,)) * Math.exp(-(i*damping))
+                if (isNaN(dampedsine)) continue
+                dots2[i].style.translate = `0rem ${dampedsine}rem`
+            }
+        }
+        
+        for (let i = 0; i < indexOfLastDot+1; i++) {
+            let sum = 0
+            sum1 = parseFloat(dots[i].style.translate.slice(4,))
+            sum2 = parseFloat(dots2[i].style.translate.slice(4,))
+            if (!isNaN(sum1)) sum += sum1
+            if (!isNaN(sum2)) sum += sum2
+            dotsum[i].style.translate = `0rem ${sum}rem`
+        }
+    }
+}
 async function animateMedia() {
     document.getElementById('v-parameter').classList.add('unclickable')
     while (loop === true) {
@@ -237,7 +333,6 @@ async function animateMedia() {
 
     }
 }
-
 async function animateCollision() {
     var sine = 0
     var sine2 = 0
@@ -275,17 +370,16 @@ async function animateCollision() {
     }
 }
 
-const controlWaveButton = document.getElementById("controlWaveButton")
-const resetWaveButton = document.getElementById("resetWaveButton")
 
-controlWaveButton.addEventListener("click", () => {
-    if (controlWaveButton.textContent == "STOP WAVE") {
+sendWaveButton.addEventListener("click", () => {
+    if (sendWaveButton.textContent == "STOP WAVE") {
         loop = false;
-        controlWaveButton.textContent = "SEND WAVE";
+        sendWaveButton.textContent = "SEND WAVE";
     }
     else {
         loop = true;
-        controlWaveButton.textContent = "STOP WAVE";
+        sendWaveButton.textContent = "STOP WAVE";
+        pulseWaveButton.classList.add('unclickable')
 
         switch (mode) {
             case 'standingwave':
@@ -300,7 +394,11 @@ controlWaveButton.addEventListener("click", () => {
         }
     }
 });
+pulseWaveButton.addEventListener("click", async () => {
+    sendWaveButton.classList.add('unclickable')
+    animateStandingWavePulse()
 
+})
 resetWaveButton.addEventListener("click", resetWave);
 
 const simselector = document.getElementById('sim-selector')
@@ -325,30 +423,31 @@ simselector.addEventListener(('click'), async (e) => {
         document.getElementById('axis-extension').classList.add('none')
         document.getElementById('media-boundary').classList.add('none')
         document.getElementById('media-vrange').classList.add('none')
-
+        
+        pulseWaveButton.classList.remove('none')
         document.getElementById('resultant-wave').classList.remove('none')
         document.getElementById('slidercover').classList.remove('none')
         document.getElementById('container-main').classList.remove('side-by-side')
         medium.classList.remove('relative')
         mediumreflected.classList.remove('relative')
     }
-    document.getElementById('wave2').classList.add('none')
     
     if (e.target.id === 'waveinterfere') {
         document.getElementById('slidercover').classList.add('none')
         document.getElementById('wave2').classList.remove('none')
         document.getElementById('stringlenwrapper').classList.add('none')
+        return
     }
     else if (e.target.id === 'mediacompare') {
         datapoints = 120
         await resetWave()
         document.documentElement.style.setProperty('--datapoints', '120');
-
         const containermain = document.getElementById('container-main')
         document.getElementById('axis-extension').classList.remove('none')
         document.getElementById('media-boundary').classList.remove('none')
         document.getElementById('media-vrange').classList.remove('none')
-
+        
+        pulseWaveButton.classList.add('none')
         document.getElementById('resultant-wave').classList.add('none')
         document.getElementById('slidercover').classList.add('none')
         containermain.classList.add('side-by-side')
@@ -361,12 +460,16 @@ simselector.addEventListener(('click'), async (e) => {
         mediumreflected.style.backgroundColor = `rgba(226, 90, 49, ${0.35 - (0.018)*v2})`
         
         await generateAxis(totalstrlenmeters, true);
+        document.getElementById('wave2').classList.add('none')
     }
     else {
         document.getElementById('stringlenwrapper').classList.remove('none')
+        document.getElementById('wave2').classList.add('none')
     }
 
 })
+
+
 
 
 const fslider = document.getElementById("f")
@@ -389,6 +492,10 @@ const v2box = document.getElementById("v2-box")
 
 const tslider = document.getElementById("t")
 const tbox = document.getElementById("t-box")
+const dampslider = document.getElementById('damp')
+const dampbox = document.getElementById('damp-box')
+const reflectbutton = document.getElementById('reflect')
+const reflect2xbutton = document.getElementById('reflect2x')
 
 fslider.addEventListener('input', (e) => {
     f = e.target.value
@@ -436,4 +543,49 @@ v2slider.addEventListener('input', (e) => {
 tslider.addEventListener('input', (e) => {
     tbox.textContent = `${e.target.value}x`;
     delay = 10/e.target.value 
+});
+
+dampslider.addEventListener('input', (e) => {
+    dmp = e.target.value
+    if (dmp == 0) {
+        dampbox.textContent = `No damping`;
+        return
+    }
+    dampbox.textContent = `${parseFloat(dmp).toFixed(1)}x damping`;
+});
+reflectbutton.addEventListener('click', (e) => {
+    let clicked = e.target.textContent
+    switch (e.target.textContent) {
+        case 'Fixed End':
+            reflect = -1
+            e.target.classList.add('selected')
+            break
+        case 'Free End':
+            reflect = 1
+            e.target.classList.add('selected')
+            break
+        default:
+            return
+    }
+    for (butt of reflectbutton.getElementsByClassName('parameter-butt')) {
+        if (butt.textContent != clicked) butt.classList.remove('selected')
+    }
+});
+reflect2xbutton.addEventListener('click', (e) => {
+    let clicked = e.target.textContent
+    switch (e.target.textContent) {
+        case 'Yes':
+            reflecttwice = 1
+            e.target.classList.add('selected')
+            break
+        case 'No':
+            reflecttwice = 0
+            e.target.classList.add('selected')
+            break
+        default:
+            return
+    }
+    for (butt of reflect2xbutton.getElementsByClassName('parameter-butt')) {
+        if (butt.textContent != clicked) butt.classList.remove('selected')
+    }
 });

@@ -55,7 +55,7 @@ button{
     position: relative !important;
 }
 .unclickable {
-    opacity: 50%;
+    opacity: 40%;
     pointer-events: none;
 }
 
@@ -230,22 +230,7 @@ parameter{
     width: fit-content;
     min-width: 5rem !important;
 }
-.parameter-slider{
-    writing-mode: vertical-lr;
-    direction: rtl;
-    appearance: slider-vertical;
-    height: var(--parameterslider-length);
-    width: var(--parameterslider-thicc);
-    border: 0.1rem solid #313131;
-    vertical-align: bottom;
-    outline: none;
-}
-.parameter-slider.sideways{
-    writing-mode: horizontal-tb; 
-    width: var(--parameterslider-length); 
-    height: var(--parameterslider-thicc);
-    margin-bottom: 0.8rem;
-}
+
 .number-input{
     width: 2.5rem;
     text-align: right;
@@ -253,17 +238,41 @@ parameter{
     font-weight: bold;
 }
 .parameter-option{
-    width: fit-content;
-}
-.flexrow{
-    width: 100%;
     display: flex;
     flex-flow: row;
+    width: 100%;
+    padding: 0.3rem;
+
+    align-items: center;
 }
-.parameterbutt{
+
+#medium-properties > .control{
+    width: 15rem;
+}
+.parameter-option.buttons{
+    justify-content: space-around;
+}
+.option-text{
+    flex-grow: 1;
+}
+.parameter-option-text{
+    text-wrap: wrap;
+    flex-basis: 80%;
+}
+
+.parameter-option.text-buttons{
+    display: flex;
+    gap: 0.2rem;
     justify-content: space-evenly;
+    flex-basis: 80%;
 }
-.flexrow.alignright {
-    justify-content: flex-end;
-    
+.parameter-butt{
+    border: 0.15rem solid var(--colour1);
+    text-align: center;
+    padding: 0.1rem;
+    width: 100%;
+    min-width: 2rem;
+    max-width: 7rem;
+    font-size: 0.86rem;
 }
+
