@@ -39,41 +39,59 @@ input[type=number] {
 }
 
 .parameter-slider{
-    writing-mode: vertical-lr;
-    direction: rtl;
+    writing-mode: horizontal-tb; 
+    direction: ltr;
     appearance: slider-vertical;
-    height: var(--parameterslider-length);
-    width: var(--parameterslider-thicc);
+    width: calc(var(--parameterslider-length)*1.2); 
+    height: var(--parameterslider-thicc);
     border: 0.1rem solid #313131;
     vertical-align: bottom;
     outline: none;
 }
-.parameter-slider.sideways{
-    writing-mode: horizontal-tb; 
-    direction: ltr;
-    width: calc(var(--parameterslider-length)*1.2); 
-    height: var(--parameterslider-thicc);
+.parameter-slider.vertical{
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: var(--parameterslider-length);
+    width: var(--parameterslider-thicc);
 }
+
 
 .parameter-slider::-webkit-slider-runnable-track {
     background: var(--colour2);
-    width: 0.4rem;
+    height: calc(var(--parameterslider-thicc) - 0.1rem);
     border: none;
 }
 .parameter-slider::-moz-range-track {
     background: var(--colour2);
-    width: 0.4rem;
-    border: none;
-}
-.parameter-slider::-ms-track {
-    background: var(--colour2);
-    width: 0.4rem;
-    color: transparent;
-}
-.parameter-slider.sideways::-moz-range-track {
     height: calc(var(--parameterslider-thicc) - 0.1rem);
     width: 100%;
 }
+.parameter-slider::-ms-track {
+    background: var(--colour2);
+    height: calc(var(--parameterslider-thicc) - 0.1rem);
+    width: 100%;
+    color: transparent;
+}
+
+.parameter-slider.vertical::-webkit-slider-runnable-track {
+    background: var(--colour2);
+    height: calc(var(--parameterslider-length) - 0.1rem);
+    border: none;
+}
+.parameter-slider.vertical::-moz-range-track {
+    background: var(--colour2);
+    height: calc(var(--parameterslider-length) - 0.1rem);
+    border: none;
+}
+.parameter-slider.vertical::-ms-track {
+    background: var(--colour2);
+    height: calc(var(--parameterslider-length) - 0.1rem);
+    color: transparent;
+}
+
+
+
+
 .parameter-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: #242424; /* Example thumb color */

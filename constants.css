@@ -1,8 +1,8 @@
 :root {
     --datapoints: 160;
-    --dotdimensions: 0.15rem;
-    --dotgap: 0.15rem;
-    --tube-height: 10rem;
+    --dotdimensions: 0.16rem;
+    --dotgap: 0.16rem;
+    --tube-height: 11rem;
     --tube-end: solid 0.2rem black;
     --medium-width: calc((var(--dotdimensions) + var(--dotgap))*var(--datapoints));
     --medium-padding: 2px;
@@ -13,6 +13,7 @@
     --colour2: #a3d1c5;
     --wave1colour: #315be2;
     --wave2colour: rgb(218, 62, 23);
+    --wave3colour: #1da510;
     --resultantwavecolour: rgb(126, 0, 165);
     
     font-size: 1.05rem;
@@ -21,4 +22,5 @@
 
     --parameterslider-length: 6rem;
     --parameterslider-thicc: 0.5rem;
+
 }

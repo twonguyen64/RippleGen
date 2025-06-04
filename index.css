@@ -1,32 +1,37 @@
 @import url("constants.css");
 @import url("sliders.css");
 
+:root{
+    --str1: scale(1);
+    --str2: scale(1);
+}
 button{
     font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
     font-weight: bold;
 }
 
+#infomain{
+    padding: 2rem;
+}
 #main{
     display: flex;
     flex-flow: column;
-    width: 1200px;
     height: 80%;
-    padding-left: 4rem;
+    margin-left: 4rem;
+    width: calc(var(--medium-width) + 8rem);
 }
 #waveactivity{
     display: flex;
     flex-flow: column;
-    width: var(--medium-width) + var(--slidercoverwidth);
     gap: 3rem;
-    padding: 2rem;
+    padding-top: 1rem;
 }
 #controlpanel{
-    margin-left: 4rem;
+    margin-left: 1rem;
     display: flex;
     flex-flow: column;
-    width: 50%;
-    gap: 30px;
-    padding-top: 10px;
+    gap: 1.2rem;
+    padding-top: 1rem;
     
 }
 @media (max-width: 1000px)
@@ -49,7 +54,7 @@ button{
     display: none !important;
 }
 .hide {
-    visibility: hidden !important;
+    opacity: 0 !important;
 }
 .relative {
     position: relative !important;
@@ -58,7 +63,9 @@ button{
     opacity: 40%;
     pointer-events: none;
 }
-
+.free-end{
+    border: none !important;
+}
 #parameters{
     display: flex;
     gap: 40px;
@@ -69,7 +76,7 @@ button{
     display: flex;
     flex-flow: row;
     gap: 1rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
     font-size: 0.9rem;
 }
 .sim-type{
@@ -96,7 +103,7 @@ button{
     overflow: visible;
 }
 .tube-gap {
-    margin-left: calc(var(--dotdimensions)*-2);
+    margin-left: calc(var(--dotdimensions)*-0.5);
 }
 
 .draggablecover{
@@ -113,7 +120,7 @@ button{
     left: 0;
     padding-left: 0.5rem;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     transform: none;
 }
 #L {
@@ -140,20 +147,20 @@ button{
 #axis-extension {
     margin-left: calc(var(--medium-padding) + var(--medium-width) + var(--dotdimensions));
 }
-#media-boundary {
+#media-boundary, #media-boundary-sum {
     position: absolute;
     left: calc(var(--medium-width));
     bottom: 0;
     height: 100%;
-    width: 0.4rem;
-    background-color: rgba(77, 77, 77, 0.5);
+    width: 0.3rem;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 n{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     top: 1.2rem;
-    font-size: 0.8rem;
+    font-size: 0.80rem;
     transition: opacity 0.2s;
 }
 majmrk , minmrk {
@@ -163,6 +170,18 @@ majmrk , minmrk {
 }
 majmrk {height: 0.8rem; width: 0.1rem;}
 minmrk {height: 0.5rem; margin-bottom: 0.3rem;}
+
+#analytics{
+    display: flex; 
+    flex-flow: row; 
+    gap: 0.5rem; 
+    float: right; 
+    padding-top: 1rem;
+    font-size: 0.9rem;
+    letter-spacing: -1px
+
+}
+
 
 .medium{
     position: absolute;
@@ -177,11 +196,11 @@ minmrk {height: 0.5rem; margin-bottom: 0.3rem;}
     overflow: visible;
     z-index: 1;
 }
-#wavemedium-reflected {
+#wavemedium-reflected, #wavemedium-reflected2 {
     z-index: 0;
 }
 
-dot, dot2, dotsum {
+dot, dot2, dotsum, dot3 {
     position: relative;
     flex: 0 0 auto;
     width: var(--dotdimensions);
@@ -190,27 +209,39 @@ dot, dot2, dotsum {
 dot {background-color: var(--wave1colour)}
 dot2 {background-color: var(--wave2colour);}
 dotsum {background-color: var(--resultantwavecolour);}
+dot3 {background-color: var(--wave3colour);}
+
+.str1 {
+    transform: var(--str1);
+}
+.str2 {
+    transform: var(--str2);
+}
+
 
 .outer-control, .spec-control {
     display: flex;
     flex-flow: column;
-    gap: 1rem;
+    gap: 0.5rem;
     padding: 0.5rem;
-    height: 12rem;
+    padding-top: 0.5rem;
+    height: 10.8rem;
     
     font-size: 0.9em;
     font-weight: bold;
     border: 0.2rem solid var(--colour1);
     justify-content: flex-end;
 }
-.outer-control > label, parameter > label {
+.outer-control > label, parameter > div > label {
     text-align: center;
     height: 2rem;
+    text-wrap: nowrap;
 }
 .control, .spec-control > parameter {
     display: flex;
-    gap: 0.6rem;
-    align-self: center;
+    flex-flow: column;
+    justify-content: space-evenly;
+    gap: 1rem;
     flex-basis: 70%;
 }
 .spec-control {
@@ -219,18 +250,31 @@ dotsum {background-color: var(--resultantwavecolour);}
 
 parameter{
     display: flex;
-    flex-flow: column;
-    width: 2.5rem;
-    gap: 0.5rem;
-    padding: 0.2rem;
+    flex-flow: row;
+    width: fit-content;
+    gap: 0.6rem;
+    padding: 0.3rem;
     margin-top: -0.5rem;
     align-items: center;
 }
 .spec-control > parameter {
+    flex-flow: column; 
+    gap: 0.5rem;
+    justify-content: center;
     width: fit-content;
     min-width: 5rem !important;
+    height: 11rem;
 }
-
+.parameter-label{
+    font-size: 0.85rem;
+    width: 5rem;
+    text-align: right;
+    letter-spacing: -1px
+}
+.parameter-value{
+    text-align: center;
+    width: 2.5rem;
+}
 .number-input{
     width: 2.5rem;
     text-align: right;
@@ -241,16 +285,17 @@ parameter{
     display: flex;
     flex-flow: row;
     width: 100%;
-    padding: 0.3rem;
-
-    align-items: center;
+    min-height: 1.5rem;
 }
 
 #medium-properties > .control{
-    width: 15rem;
+    width: 20rem;
 }
 .parameter-option.buttons{
     justify-content: space-around;
+}
+.parameter-option > a {
+    font-size: 0.85rem;
 }
 .option-text{
     flex-grow: 1;
@@ -258,6 +303,8 @@ parameter{
 .parameter-option-text{
     text-wrap: wrap;
     flex-basis: 80%;
+    font-size: 0.85rem;
+    letter-spacing: -0.6px
 }
 
 .parameter-option.text-buttons{
@@ -273,6 +320,7 @@ parameter{
     width: 100%;
     min-width: 2rem;
     max-width: 7rem;
-    font-size: 0.86rem;
+    font-size: 0.85rem;
+    letter-spacing: -0.6px
 }
 

@@ -7,12 +7,14 @@
     <title>RippleGen</title>
 </head>
 <body>
+    <div style="display: flex; flex-flow: row;">
     <div id="main">
         <div id="waveactivity">
             <div id="sim-selector">
                 <div class="sim-type selected" id="standingwave">Standing Wave Simulator</div>
                 <div class="sim-type" id="waveinterfere">Wave Interference Simulator</div>
                 <div class="sim-type" id="mediacompare">Media Comparison Simulator</div>
+                <div class="sim-type" id="transmission">Wave Transmission Simulator</div>
             </div>
             <div class="container" id="resultant-wave">
                 <div class="tube">
@@ -20,12 +22,14 @@
                     <div class="draggablecover" id="draggablecover-sum"></div>
                 </div>
                 <div class="axis"></div>
+                <div class="none" id="media-boundary-sum"></div>
             </div>
 
             <div class="container" id="container-main">
                 <div class="tube" id="tube-main">
                     <div class="medium" id="wavemedium"></div>
                     <div class="medium" id="wavemedium-reflected"></div>
+                    <div class="medium" id="wavemedium-reflected2"></div>
                     <div class="draggablecover" id="draggablecover">
                         <div id="stringlenwrapper" style="height: inherit; width: inherit;">
                             <n id="L"></n>
@@ -37,6 +41,12 @@
                 <div class="axis none" id="axis-extension"></div>
                 <div class="none" id="media-boundary"></div>
                 <div id="slidercover-wrapper"></div>
+                
+                <div class="none" id="analytics">
+                    <div>Time taken to cross boundary:</div>
+                    <div id="stopwatch" style="width: 2rem; text-align: right;">0</div>
+                    <div>s</div>
+                </div>
             </div>
         </div>
         
@@ -51,25 +61,28 @@
                     <label>Wave 1 (Source)</label>
                     <div class="control">
                         <parameter>
-                            <input type="range" min="1" max="20" value="5" step="1"
+                            <div class="parameter-label">Frequency</div>
+                            <input type="range" min="1" max="20" value="4" step="1"
                                 class="parameter-slider" id="f">
-                            <div>
-                                <label id="f-box">5 Hz</label>
-                            </div>
+                            <div class="parameter-value" id="f-box">4 Hz</div>
                         </parameter>
                         <parameter>
-                            <input type="range" min="0" max="360" value="0" step="1"
-                                class="parameter-slider" id="phase">
-                            <div>
-                                <label id="phase-box">0°</label>
-                            </div>
-                        </parameter>
-                        <parameter>
+                            <div class="parameter-label">Amplitude</div>
                             <input type="range" min="0" max="4" value="3" step="0.1"
                                 class="parameter-slider" id="amp">
-                            <div>
-                                <label id="amp-box">3</label>
-                            </div>
+                            <div class="parameter-value" id="amp-box">3</div>
+                        </parameter>
+                        <parameter>
+                            <div class="parameter-label">Phase shift</div>
+                            <input type="range" min="0" max="360" value="0" step="10"
+                                class="parameter-slider" id="phase">
+                            <div class="parameter-value" id="phase-box">+0°</div>
+                        </parameter>
+                        <parameter id="pulsewidth-parameter">
+                            <div class="parameter-label">Pulse width</div>
+                            <input type="range" min="0.5" max="2" value="0.5" step="0.5"
+                                class="parameter-slider" id="pulsewidth">
+                            <div class="parameter-value" id="pulsewidth-box">0.5λ</div>
                         </parameter>
                     </div>
                 </div>
@@ -78,25 +91,22 @@
                     <label>Wave 2</label>
                     <div class="control">
                         <parameter id="f2-parameter">
+                            <div class="parameter-label">Frequency</div>
                             <input type="range" min="1" max="20" value="5" step="1"
                                 class="parameter-slider" id="f2">
-                            <div>
-                                <label id="f2-box">5 Hz</label>
-                            </div>
+                            <div class="parameter-value" id="f2-box">5 Hz</div>
                         </parameter>
                         <parameter>
-                            <input type="range" min="0" max="360" value="0" step="1"
-                                class="parameter-slider" id="phase2">
-                            <div>
-                                <label id="phase2-box">0°</label>
-                            </div>
-                        </parameter>
-                        <parameter>
+                            <div class="parameter-label">Amplitude</div>
                             <input type="range" min="0" max="4" value="3" step="0.1"
                                 class="parameter-slider" id="amp2">
-                            <div>
-                                <label id="amp2-box">3</label>
-                            </div>
+                            <div class="parameter-value" id="amp2-box">3</div>
+                        </parameter>
+                        <parameter>
+                            <div class="parameter-label">Phase shift</div>
+                            <input type="range" min="0" max="360" value="0" step="1"
+                                class="parameter-slider" id="phase2">
+                            <div class="parameter-value" id="phase2-box">0°</div>
                         </parameter>
                     </div>
                 </div>
@@ -104,57 +114,51 @@
                 
                 <div class="spec-control none" id="media-vrange" style="display: flex; flex-flow: row; gap: 1rem;">
                     <parameter style="border: 0.2rem solid blue;" id="v-parameter">
-                        <label>Medium 1 Speed</label>
+                        <div id="med1parameter" style="text-align: center;">Medium 1 Speed</div>
                         <input type="range" min="1" max="20" value="10" step="1"
-                            class="parameter-slider" id="v">
-                        <div>
-                            <input type="number" min="1" max="20" value="10"
-                            class="number-input" id="v-box">
-                            <label>m/s</label>
-                        </div>
+                            class="parameter-slider vertical" id="v">
+                        <div class="parameter-value" style="width: 3rem;" id="v-box">m/s</div>
                     </parameter>
                     <parameter style="border: 0.2rem solid red;">
-                        <label>Medium 2 Speed</label>
+                        <div id="med2parameter" style="text-align: center;">Medium 2 Speed</div>
                         <input type="range" min="1" max="20" value="5" step="1"
-                            class="parameter-slider" id="v2">
-                        <div>
-                            <input type="number" min="1" max="20" value="5"
-                            class="number-input" id="v2-box">
-                            <label>m/s</label>
-                        </div>
+                            class="parameter-slider vertical" id="v2">
+                        <div class="parameter-value" id="v2-box" style="width: 3rem;">m/s</div>
                     </parameter>
                 </div> 
 
                 <div class="outer-control">
-                    <label>Simulation <br> Speed</label>
-                    <div class="control">
-                        <parameter>
+                    <div class="control" style="gap: 0.5rem">
+                        <div style="text-align: center;">Simulation <br> Speed</div>
+                        <parameter style="flex-flow: column; align-self: center;">
                             <input type="range" min="0.125" max="1" value="1" step="0.125"
-                                class="parameter-slider" id="t">
+                                class="parameter-slider vertical" id="t">
                             <label id="t-box">1x</label>
                         </parameter>
                     </div>
                 </div>
                 <div class="outer-control" id="medium-properties">
                     <label>Properties</label>
-                    <div class="control" style="flex-flow: column; justify-content: space-evenly;">
+                    <div class="control">
                         <parameter class="parameter-option">
                             <input type="range" min="0" max="5" value="0" step="0.5"
-                                class="parameter-slider sideways" id="damp">
+                                class="parameter-slider" id="damp">
                             <a id="damp-box" style="text-wrap: nowrap;">No damping</a>
                         </parameter>
                         <parameter class="parameter-option options-text">
-                            <div class="parameter-option-text">Reflection type</div>
+                            <div class="parameter-option-text">Right-side reflection</div>
                             <div class="parameter-option text-buttons" id="reflect">
                                 <div class="parameter-butt selected">Fixed End</div>
                                 <div class="parameter-butt">Free End</div>
+                                <div class="parameter-butt">None</div>
                             </div>
                         </parameter>
                         <parameter class="parameter-option options-text">
-                            <div class="parameter-option-text">Reflect on both sides?</div>
+                            <div class="parameter-option-text">Left-side reflection</div>
                             <div class="parameter-option text-buttons" id="reflect2x">
-                                <div class="parameter-butt">Yes</div>
-                                <div class="parameter-butt selected">No</div>
+                                <div class="parameter-butt">Fixed End</div>
+                                <div class="parameter-butt">Free End</div>
+                                <div class="parameter-butt selected">None</div>
                             </div>
                         </parameter>
                         
@@ -162,6 +166,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="infomain">
+        <object type="text/html" data="./simulation-info-html/standingwave.html"></object>
+    </div>
     </div>
     
 
