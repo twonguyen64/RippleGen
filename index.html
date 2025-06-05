@@ -115,13 +115,13 @@
                 <div class="spec-control none" id="media-vrange" style="display: flex; flex-flow: row; gap: 1rem;">
                     <parameter style="border: 0.2rem solid blue;" id="v-parameter">
                         <div id="med1parameter" style="text-align: center;">Medium 1 Speed</div>
-                        <input type="range" min="1" max="20" value="10" step="1"
+                        <input type="range" min="2" max="32" value="16" step="2"
                             class="parameter-slider vertical" id="v">
                         <div class="parameter-value" style="width: 3rem;" id="v-box">m/s</div>
                     </parameter>
                     <parameter style="border: 0.2rem solid red;">
                         <div id="med2parameter" style="text-align: center;">Medium 2 Speed</div>
-                        <input type="range" min="1" max="20" value="5" step="1"
+                        <input type="range" min="2" max="32" value="8" step="2"
                             class="parameter-slider vertical" id="v2">
                         <div class="parameter-value" id="v2-box" style="width: 3rem;">m/s</div>
                     </parameter>
@@ -138,13 +138,19 @@
                     </div>
                 </div>
                 <div class="outer-control" id="medium-properties">
-                    <label>Properties</label>
+                    <a style="float: left; translate: 0rem 0.5rem;">Properties</a>
                     <div class="control">
                         <parameter class="parameter-option">
+                            <a id="damp-box" style="text-wrap: nowrap;">No damping</a>
                             <input type="range" min="0" max="5" value="0" step="0.5"
                                 class="parameter-slider" id="damp">
-                            <a id="damp-box" style="text-wrap: nowrap;">No damping</a>
                         </parameter>
+                        <parameter class="parameter-option">
+                            <a id="absorb-box" style="text-wrap: nowrap;">Full reflection</a>
+                            <input type="range" min="0" max="90" value="100" step="10"
+                                class="parameter-slider" id="absorb">
+                        </parameter>
+                        <div></div>
                         <parameter class="parameter-option options-text">
                             <div class="parameter-option-text">Right-side reflection</div>
                             <div class="parameter-option text-buttons" id="reflect">

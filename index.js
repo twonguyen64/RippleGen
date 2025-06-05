@@ -27,7 +27,7 @@ function sleep(ms) {
 }
 
 var mode = 'standingwave'
-var totalstrlenmeters = 16 //m
+var totalstrlenmeters = 2 //m
 const gapdotdistance = 0.32 //rem, (dot width + dot gap)
 var divisions = 16
 var datapoints = 160
@@ -49,8 +49,9 @@ var u = 0
 var delay = 10
 var loop = true
 var reflect = -1
-var dmp = 0
 var reflecttwice = 0
+var dmp = 0
+var absorb = 1
 var pulsewid = 0.5
 var pulseLen = (Math.PI*100)/f
 var tplus = 0 //the time after the last pulse is sent
@@ -217,8 +218,12 @@ async function animateStandingWave() {
         await sleep(delay)
         
         sine = a*Math.sin(((Math.PI*Math.PI))*f*(t/-1000) + phase).toFixed(18) //18 decimal places were tested to give best accuracy
-        sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,))
-        if (!isNaN(sine0reflected)) sine += (reflecttwice*sine0reflected)
+        sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,)) * absorb
+        //double interference
+        if (reflecttwice != 0) {
+            sine0reflected = parseFloat(dots2[0].style.translate.slice(4,))
+            if (!isNaN(sine0reflected)) sine += (reflecttwice*sine0reflected) * absorb
+        }
             
         dots[0].style.translate = `0rem ${sine}rem`
         dots2[indexOfLastDot].style.translate = `0rem ${reflect*sine2}rem`
@@ -252,10 +257,6 @@ async function animateStandingWave() {
             if (!isNaN(sum1)) sum += sum1
             if (!isNaN(sum2)) sum += sum2
             dotsum[i].style.translate = `0rem ${sum}rem`
-        }
-        //double interference
-        if (reflecttwice != 0) {
-            sine0reflected = parseFloat(dots2[0].style.translate.slice(4,))
         }
     }
 }
@@ -294,14 +295,14 @@ async function animateStandingWavePulse() {
 
         if (reflecttwice != 0) {
             tplus = sine = 0
-            let sine0reflected = parseFloat(dots2[0].style.translate.slice(4,))
+            let sine0reflected = parseFloat(dots2[0].style.translate.slice(4,)) * absorb
             if (!isNaN(sine0reflected)) {
                 sine += (reflecttwice*sine0reflected)
                 dots[0].style.translate = `0rem ${sine}rem`
             }
         }
 
-        sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,))
+        sine2 = parseFloat(dots[indexOfLastDot].style.translate.slice(4,)) * absorb
         if (isNaN(sine2)) sine2 = 0
         dots2[indexOfLastDot].style.translate = `0rem ${reflect*sine2}rem`
 
@@ -377,11 +378,12 @@ async function animateCollision() {
 async function animateMedia() {
     document.getElementById('v-parameter').classList.add('unclickable')
     const starttime = Date.now() //stopwatch
+    let stopwatchtime = 0
     while (loop === true) {
         //stopwatch
         if (u <= 0) {
-            let stopwatchtime = ((Date.now() - starttime)/1000).toFixed(2)
             stopwatch.textContent = stopwatchtime
+            stopwatchtime = ((Date.now() - starttime)/12200).toFixed(3)
         }
 
         await sleep(delay)
@@ -438,7 +440,7 @@ async function animateTransmission() {
             }
             y = 0
             for (let i = indexOfLastDot; i >= indexOfLastDot - limit3; i--) {
-                let sinereflected = a * Math.sin(0.02 * Math.PI * f * (u - y/v) + phase);
+                let sinereflected = -1* a * Math.sin(0.02 * Math.PI * f * (u - y/v) + phase);
                 sinereflected *= Ar
                 dots3[i].style.translate = `0rem ${sinereflected}rem`;
                 y++
@@ -505,7 +507,7 @@ async function animateTransmissionPulse() {
 
             y = 0
             for (let i = indexOfLastDot; i > indexOfLastDot - limit3; i--) {
-                let sinereflected = a * Math.sin(0.02 * Math.PI * f * (u - y/v) + phase);
+                let sinereflected = -1*  a * Math.sin(0.02 * Math.PI * f * (u - y/v) + phase);
                 sinereflected *= Ar
                 dots3[i].style.translate = `0 ${sinereflected}rem`;
                 y++
@@ -598,7 +600,6 @@ pulseWaveButton.addEventListener("click", async () => {
 resetWaveButton.addEventListener("click", resetWave);
 
 function createInfoPage(mode) {
-    console.log('updating page')
     const infomain = document.getElementById('infomain')
     infomain.textContent = ''
     const newinfopage = document.createElement('object')
@@ -713,7 +714,6 @@ simselector.addEventListener(('click'), async (e) => {
     }
     document.getElementById('container-main').classList.remove('hide')
     document.getElementById('resultant-wave').classList.remove('hide')
-    console.log(e.target.id)
 });
 
 
@@ -743,12 +743,14 @@ const tslider = document.getElementById("t")
 const tbox = document.getElementById("t-box")
 const dampslider = document.getElementById('damp')
 const dampbox = document.getElementById('damp-box')
+const absorbslider = document.getElementById('absorb')
+const absorbbox = document.getElementById('absorb-box')
 const reflectbutton = document.getElementById('reflect')
 const reflect2xbutton = document.getElementById('reflect2x')
 
 fslider.addEventListener('input', (e) => {
     f = parseInt(e.target.value)
-    fbox.textContent = `${e.target.value} Hz`
+    fbox.textContent = `${f} Hz`
     let len = ((indexOfLastDot+1)*(totalstrlenmeters/datapoints))
     strlenlambda.textContent = `${(f*len/(4*totalstrlenmeters) ).toFixed(2)}λ`
 });
@@ -783,23 +785,21 @@ pulsewidth.addEventListener('input', (e) => {
 
 
 vslider.addEventListener('input', (e) => {
-    v = parseInt(e.target.value)
-    vbox.textContent = `${v} m/s`;
+    v = parseInt(e.target.value) / 1.6
+    vbox.textContent = `${e.target.value} m/s`;
     medium.style.backgroundColor = `rgba(49, 90, 226, ${0.35 - (0.018)*v})`
 
     if (mode === 'transmission') {
         document.documentElement.style.setProperty('--str1', `scale(${3 - v/8})`);
-        console.log(document.documentElement.style)
     }
 });
 v2slider.addEventListener('input', (e) => {
-    v2 = parseInt(e.target.value)
-    v2box.textContent = `${v2} m/s`;
+    v2 = parseInt(e.target.value) / 1.6
+    v2box.textContent = `${e.target.value} m/s`;
     mediumreflected.style.backgroundColor = `rgba(226, 90, 49, ${0.35 - (0.018)*v2})`
 
     if (mode === 'transmission') {
         document.documentElement.style.setProperty('--str2', `scale(${3 - v2/8})`);
-        console.log(document.documentElement.style)
     }
 });
 
@@ -810,13 +810,22 @@ tslider.addEventListener('input', (e) => {
 });
 
 dampslider.addEventListener('input', (e) => {
-    dmp = e.target.value
+    dmp = parseInt(e.target.value)
     if (dmp == 0) {
         dampbox.textContent = `No damping`;
         return
     }
     dampbox.textContent = `${parseFloat(dmp).toFixed(1)}x damping`;
 });
+absorbslider.addEventListener('input', (e) => {
+    absorb = (1 - e.target.value/100).toFixed(1)
+    if (absorb == 1.0) {
+        absorbbox.textContent = `Full reflection`;
+        return
+    }
+    absorbbox.textContent = `${100 - absorb*100}% energy absorption`;
+});
+
 reflectbutton.addEventListener('click', (e) => {
     let clicked = e.target.textContent
     switch (e.target.textContent) {
