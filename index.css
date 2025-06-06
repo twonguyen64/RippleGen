@@ -1,17 +1,11 @@
 @import url("constants.css");
 @import url("sliders.css");
+@import url("parameters.css");
+@import url("./sim-info-pages/infopage.css");
 
 :root{
     --str1: scale(1);
     --str2: scale(1);
-}
-button{
-    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
-    font-weight: bold;
-}
-
-#infomain{
-    padding: 2rem;
 }
 #main{
     display: flex;
@@ -34,37 +28,10 @@ button{
     padding-top: 1rem;
     
 }
-@media (max-width: 1000px)
-{
-  #waveactivity,
-  #controlpanel {
-    width: 100%;
-  }
-}
-
 
 .container{
     position: relative;
     width: calc(var(--medium-width) + var(--slidercoverwidth) + 2*var(--dotdimensions));
-}
-.side-by-side {
-    width: calc(var(--medium-width)*2);
-}
-.none {
-    display: none !important;
-}
-.hide {
-    opacity: 0 !important;
-}
-.relative {
-    position: relative !important;
-}
-.unclickable {
-    opacity: 40%;
-    pointer-events: none;
-}
-.free-end{
-    border: none !important;
 }
 #parameters{
     display: flex;
@@ -181,7 +148,10 @@ minmrk {height: 0.5rem; margin-bottom: 0.3rem;}
     letter-spacing: -1px
 
 }
-
+button{
+    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+    font-weight: bold;
+}
 
 .medium{
     position: absolute;
@@ -219,110 +189,31 @@ dot3 {background-color: var(--wave3colour);}
 }
 
 
-.outer-control, .spec-control {
-    display: flex;
-    flex-flow: column;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    padding-top: 0.5rem;
-    height: 11rem;
-    
-    font-size: 0.9em;
-    font-weight: bold;
-    border: 0.2rem solid var(--colour1);
-    justify-content: flex-end;
+.side-by-side {
+    width: calc(var(--medium-width)*2);
 }
-.outer-control > label, parameter > div > label {
-    text-align: center;
-    height: 2rem;
-    text-wrap: nowrap;
+.none {
+    display: none !important;
 }
-.control, .spec-control > parameter {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-evenly;
-    gap: 0.8rem;
-    flex-basis: 70%;
+.hide {
+    opacity: 0 !important;
 }
-.spec-control {
-    border: none;
+.relative {
+    position: relative !important;
+}
+.unclickable {
+    opacity: 40%;
+    pointer-events: none;
+}
+.free-end{
+    border: none !important;
 }
 
-parameter{
-    display: flex;
-    flex-flow: row;
-    width: fit-content;
-    gap: 1rem;
-    padding: 0.3rem;
-    margin-top: -0.5rem;
-    align-items: center;
-}
-.spec-control > parameter {
-    flex-flow: column; 
-    gap: 0.5rem;
-    justify-content: center;
-    width: fit-content;
-    min-width: 5rem !important;
-    height: 10.5rem;
-}
-.parameter-label{
-    font-size: 0.85rem;
-    width: 5rem;
-    text-align: right;
-    letter-spacing: -1px
-}
-.parameter-value{
-    text-align: center;
-    width: 2.5rem;
-}
-.number-input{
-    width: 2.5rem;
-    text-align: right;
-    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
-    font-weight: bold;
-}
-.parameter-option{
-    display: flex;
-    flex-flow: row;
-    width: 100%;
-    min-height: 1rem;
-    justify-content: flex-end;
-}
 
-#medium-properties > .control{
-    width: 20rem;
-    height: 10rem;
-}
-.parameter-option.buttons{
-    justify-content: space-around;
-}
-.parameter-option > a {
-    font-size: 0.85rem;
-}
-.option-text{
-    flex-grow: 1;
-}
-.parameter-option-text{
-    text-wrap: wrap;
-    flex-basis: 80%;
-    font-size: 0.85rem;
-    letter-spacing: -0.6px
-}
 
-.parameter-option.text-buttons{
-    display: flex;
-    gap: 0.2rem;
-    justify-content: space-evenly;
-    flex-basis: 80%;
-}
-.parameter-butt{
-    border: 0.15rem solid var(--colour1);
-    text-align: center;
-    padding: 0.1rem;
-    width: 100%;
-    min-width: 2rem;
-    max-width: 7rem;
-    font-size: 0.85rem;
-    letter-spacing: -0.6px
-}
 
+#infopage {
+    padding: 2rem;
+    font-size: 0.9rem;
+    letter-spacing: -0.04rem;
+}

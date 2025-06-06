@@ -1,0 +1,106 @@
+.outer-control, .spec-control {
+    display: flex;
+    flex-flow: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    padding-top: 0.5rem;
+    height: 11rem;
+    
+    font-size: 0.9em;
+    font-weight: bold;
+    border: 0.2rem solid var(--colour1);
+    justify-content: flex-end;
+}
+.outer-control > label, parameter > div > label {
+    text-align: center;
+    height: 2rem;
+    text-wrap: nowrap;
+}
+.control, .spec-control > parameter {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    gap: 0.8rem;
+    flex-basis: 70%;
+}
+.spec-control {
+    border: none;
+}
+
+parameter{
+    display: flex;
+    flex-flow: row;
+    width: fit-content;
+    gap: 1rem;
+    padding: 0.3rem;
+    margin-top: -0.5rem;
+    align-items: center;
+}
+.spec-control > parameter {
+    flex-flow: column; 
+    gap: 0.5rem;
+    justify-content: center;
+    width: fit-content;
+    min-width: 5rem !important;
+    height: 10.5rem;
+}
+.parameter-label{
+    font-size: 0.85rem;
+    width: 5rem;
+    text-align: right;
+    letter-spacing: -1px
+}
+.parameter-value{
+    text-align: center;
+    width: 2.5rem;
+}
+.number-input{
+    width: 2.5rem;
+    text-align: right;
+    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+    font-weight: bold;
+}
+.parameter-option{
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    min-height: 1rem;
+    justify-content: flex-end;
+}
+
+#medium-properties > .control{
+    width: 20rem;
+    height: 10rem;
+}
+.parameter-option.buttons{
+    justify-content: space-around;
+}
+.parameter-option > a {
+    font-size: 0.85rem;
+}
+.option-text{
+    flex-grow: 1;
+}
+.parameter-option-text{
+    text-wrap: wrap;
+    flex-basis: 80%;
+    font-size: 0.85rem;
+    letter-spacing: -0.6px
+}
+
+.parameter-option.text-buttons{
+    display: flex;
+    gap: 0.2rem;
+    justify-content: space-evenly;
+    flex-basis: 80%;
+}
+.parameter-butt{
+    border: 0.15rem solid var(--colour1);
+    text-align: center;
+    padding: 0.1rem;
+    width: 100%;
+    min-width: 2rem;
+    max-width: 7rem;
+    font-size: 0.85rem;
+    letter-spacing: -0.6px
+}

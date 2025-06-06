@@ -11,10 +11,10 @@
     <div id="main">
         <div id="waveactivity">
             <div id="sim-selector">
-                <div class="sim-type selected" id="standingwave">Standing Wave Simulator</div>
-                <div class="sim-type" id="waveinterfere">Wave Interference Simulator</div>
-                <div class="sim-type" id="mediacompare">Media Comparison Simulator</div>
-                <div class="sim-type" id="transmission">Wave Transmission Simulator</div>
+                <div class="sim-type selected" id="std-wave">Standing Wave Simulator</div>
+                <div class="sim-type" id="inf-wave">Wave Interference Simulator</div>
+                <div class="sim-type" id="med-wave">Media Comparison Simulator</div>
+                <div class="sim-type" id="transmit">Wave Transmission Simulator</div>
             </div>
             <div class="container" id="resultant-wave">
                 <div class="tube">
@@ -57,7 +57,7 @@
                 <button id="resetWaveButton">RESET</button>
             </div>
             <div id="parameters">
-                <div class="outer-control">
+                <div class="outer-control" id="wave1">
                     <label>Wave 1 (Source)</label>
                     <div class="control">
                         <parameter>
@@ -173,12 +173,12 @@
             </div>
         </div>
     </div>
-    <div id="infomain">
-        <object type="text/html" data="./simulation-info-html/standingwave.html"></object>
-    </div>
+    <div id="infopage"></div>
     </div>
     
 
     <script src="index.js"></script>
+    <script src="animate.js"></script>
+    <script src="parameters.js"></script>
 </body>
 </html>
