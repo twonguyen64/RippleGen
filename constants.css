@@ -19,6 +19,8 @@
 
     --colour1: #0ead86;
     --colour2: #a3d1c5;
+    --slider-colour: #0ead86;
+    --slider-background: rgb(204, 211, 209);
     --link-colour: rgb(0, 83, 207);
     --wave1colour: #315be2;
     --wave2colour: #da3e17;
@@ -43,6 +45,8 @@
     --tick-color: #c2c2c2;
     --info-color: rgb(54, 54, 54);
 
+    --slider-colour: #0fdba8;
+    --slider-background: rgb(85, 90, 88);
     --link-colour: rgb(70, 143, 253);
     --wave1colour: #378dff;
     --wave2colour: #fc653f;

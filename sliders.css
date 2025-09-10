@@ -5,8 +5,8 @@
     margin: 0;
     width: calc(var(--dotdimensions)*4 + var(--slidercoverwidth) + var(--medium-width)/2);
     height: 1rem;
-    background: rgb(192, 201, 198);
-    opacity: 0.7;
+    background: var(--slider-background);
+    transition: background 0.8s;
     transform: rotate(180deg);
     z-index: 2;
 }
@@ -15,7 +15,7 @@
     appearance: none;
     width: 1.2rem;
     height: inherit;
-    background: var(--colour1);
+    background: var(--slider-colour);
     border-bottom: 0.2rem black solid;
     cursor: pointer;
 }
@@ -23,7 +23,7 @@
 #slidercover::-moz-range-thumb {
     width: 1.2rem;
     height: inherit;
-    background: var(--colour1);
+    background: var(--slider-colour);
     border-top: 0.2rem black solid;
     cursor: poinrgb(96, 201, 162)
 }

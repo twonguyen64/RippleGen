@@ -1,0 +1,60 @@
+#load-screen {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--background-color);
+    z-index: 50;
+    transition: opacity 0.5s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading {
+    width: 8rem;
+    height: 3rem;
+    position: relative;
+}
+	@keyframes loading {
+		0%,100% {top: -1rem;}
+		25% {top: 1rem;}
+		50% {top: -1rem;}
+		75% {top: 1rem;}
+	}
+	.loading .node {
+		position: absolute;
+		animation: loading 1.2s ease-in-out infinite;
+		width: 0.5rem;
+		height: 0.5rem;
+        border-radius: 0.2rem;
+	}
+	.loading .node:nth-child(1) {
+		left: 0rem;
+		background-color: rgb(3, 102, 86);
+		animation-delay: -0.3s;
+	}
+	.loading .node:nth-child(2) {
+		left: 1rem;
+		background-color: rgb(3, 104, 62);
+		animation-delay: -0.2s;
+	}
+	.loading .node:nth-child(3) {
+		left: 2rem;
+		background-color: rgb(14, 122, 59);
+		animation-delay: -0.1s;
+	}
+	.loading .node:nth-child(4) {
+		left: 3rem;
+		background-color: rgb(0, 128, 58);
+		animation-delay: 0s;
+	}
+	.loading .node:nth-child(5) {
+		left: 4rem;
+		background-color: rgb(0, 160, 85);
+		animation-delay: 0.1s;
+	}
+	.loading .node:nth-child(6) {
+		left: 5rem;
+		background-color: rgb(0, 192, 102);
+		animation-delay: 0.2s;
+	}

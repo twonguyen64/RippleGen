@@ -1,3 +1,4 @@
+@import url("loading.css");
 @import url("constants.css");
 @import url("sliders.css");
 @import url("parameters.css");
@@ -5,10 +6,11 @@
 
 :root{
     background-color: var(--background-color);
-    transition: background-color 1s;
+    transition: background-color 0.8s;
 }
 body {
     height: 95vh;
+    margin: 0;
 }
 #main {
     display: flex; flex-flow: row;
@@ -60,7 +62,7 @@ body {
 .sim-type{
     padding: 0.5rem;
     width: 9rem;
-    border: 0.2rem solid rgb(31, 156, 94);
+    border: 0.2rem solid var(--colour1);
     background-color: var(--control-color);
     text-align: center;
     opacity: 75%;
@@ -93,7 +95,7 @@ body {
     margin-left: auto;
     z-index: 2;
     background-color: var(--background-color);
-    transition: background-color 1s;
+    transition: background-color 0.8s;
     border-left: solid 0.2rem var(--tick-color);
     overflow: visible;
 }
@@ -122,7 +124,7 @@ body {
     translate: 0.03rem calc((var(--tube-height)/-2) - 0.1rem);
     background-color: var(--axis-color);
     color: var(--font-color);
-    transition: background-color 1s;
+    transition: background-color 0.8s;
 
     overflow: visible;
     display: flex;
@@ -165,7 +167,7 @@ minmrk {height: 0.5rem; margin-bottom: 0.3rem;}
     font-size: 0.9rem;
     letter-spacing: -1px;
     color: var(--font-color);
-    transition: color 1s;
+    transition: color 0.8s;
 
 }
 button{
@@ -244,7 +246,7 @@ dot3 {background-color: var(--wave3colour);}
     overflow-y: scroll;
     background-color: var(--info-color);
     color: var(--font-color);
-    transition: background-color 1s, color 1s, 
+    transition: background-color 0.8s, color 0.8s, 
     max-width 0.6s, transform 0.4s;
     border-bottom: 2px solid var(--font-color);
     max-width: 50rem;
@@ -262,5 +264,5 @@ dot3 {background-color: var(--wave3colour);}
 }
     .titlecard-link {
         color: var(--link-colour);
-        transition: color 1s;
+        transition: color 0.8s;
     }

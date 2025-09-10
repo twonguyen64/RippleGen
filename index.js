@@ -26,19 +26,7 @@ const infopage = document.getElementById('infopage')
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-function lightDarkToggle() {
-    const toggleText = document.getElementById('light-dark-toggle-text')
-    const toggleInput = document.getElementById('toggleinput')
-    if (toggleInput.checked) {
-        document.documentElement.classList.add('dark-mode')
-        toggleText.textContent = 'Dark Mode'
-    }
-    else {
-        document.documentElement.classList.remove('dark-mode')
-        toggleText.textContent = 'Light Mode'
-    }
-}
-lightDarkToggle()
+
 
 const PI = Math.PI
 var mode = 'std-wave'
@@ -328,7 +316,7 @@ simselector.addEventListener(('click'), async (e) => {
     else {
         datapoints = 120
         await resetWave()
-        await resetSliderCover()
+        resetSliderCover()
         document.documentElement.style.setProperty('--datapoints',  `${datapoints}`);
         const containermain = document.getElementById('container-main')
         document.getElementById('axis-extension').classList.remove('none')
@@ -389,6 +377,5 @@ simselector.addEventListener(('click'), async (e) => {
     document.getElementById('resultant-wave').classList.remove('hide')
 });
 
-document.getElementById('toggleinput').addEventListener('click', lightDarkToggle)
 
 
