@@ -1,3 +1,7 @@
+@font-face {
+    font-family: Roboto Mono;
+    src: url('RobotoMono-Regular.ttf');
+}
 :root {
 
     --datapoints: 160;
@@ -12,7 +16,7 @@
     --str1: scale(1);
     --str2: scale(1);
     --control-color: #d8dde0;
-    --background-color: #e4e2df
+    --background-color: #e4e2df;
     --font-color: #000000;
     --axis-color: #00000055;
     --tick-color: #252525;
@@ -30,7 +34,8 @@
     
     font-size: 1.1rem;
     background-color: var(--backgnd);
-    font-family: 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+    font-family: 'Liberation Mono', monospace;
+    --font2: 'Roboto Mono', 'Liberation Mono', monospace;
 
     --parameterslider-length: 6rem;
     --parameterslider-thicc: 0.5rem;

@@ -258,6 +258,9 @@ function loadInfoPage(url) {
     })
     .then(html => {
         infopage.innerHTML = html;
+        if (typeof MathJax !== 'undefined' && MathJax.typeset) {
+            MathJax.typeset(); // Load Mathjax
+        }
     })
     .catch(error => {
         console.error('Error loading information page:', error);

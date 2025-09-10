@@ -1,2 +1,36 @@
-<div>Standing Wave
-</div>
+<p><b>A standing wave</b> is a special interference pattern formed when two identical waves travel towards each other and interfere. 
+A common occurrence of this is when a wave encounters a boundary and is reflected back (demonstrated in this simulation).</p>
+<p>Although one source generated this wave, we now have two traveling waves: one outgoing and one reflected. 
+You&#39;ll notice when these waves superimpose each other, two areas of particular interest are generated:</p>
+<ul>
+<li style="margin-bottom: 1.2rem;">Areas where destructive interference is at a maximum (called <strong>nodes</strong>). The two waves are completely out of phase at this location, and the resultant amplitude from adding the waves together here is always zero.</li>
+<li>Areas where constructive interference is at a maximum (called <strong>antinodes</strong>). The waves are completely in phase here, so that resultant amplitude becomes twice the original amplitude.</li>
+</ul>
+<p>Again, the generation of nodes &amp; antinodes is a result of the interfering waves being identical. The resultant wave appears stationary, hence, <strong>&quot;standing&quot;</strong>.</p>
+
+<br><hr>
+
+<p>A <strong>harmonic</strong> is one of several possible standing wave patterns for a given system (where the system can be a string, windpipe, etc.). The shape of the pattern and the number of nodes depends on the length of the system \(L\) and the type of boundaries at the ends:</p>
+
+$$\begin{align}
+\text{Both fixed / both free ends:}\qquad &amp;L = n \frac{\lambda}{2},\quad n = 1,2,3\dots\\\\
+\text{One fixed & one free end:}\qquad &amp;L = n \frac{\lambda}{4}, \quad n = 1,3,5\dots
+\end{align}
+$$
+<p>Where \(\lambda\) is the wavelength, and \(n\)  denotes all the possible harmonics (1st harmonic, 2nd harmonic, etc.)</p>
+
+<br><hr>
+<h3 id="simulation-example">Simulation Example</h3>
+<ul>
+<li>Set the <em>Frequency</em> to <strong>8Hz</strong> and <em>Pulse Width</em> to <strong>1λ</strong>.</li>
+<li>Set both <em>Right &amp; Left side reflections</em> to <strong>Fixed End</strong>.</li>
+<li>Make sure that <em>Properties</em> sliders are set to <strong>No damping</strong> and <strong>Full reflection</strong></li>
+<li>Decrease to length of the medium to <strong>1λ</strong> by dragging the <em>boundary slider</em>.</li>
+</ul>
+<p>Now try <strong>sending a single pulse</strong>. Notice how the resultant wave is reflected and interferes with itself. 
+Since \(L = \lambda\), that means \(n = 2\) and we are generating the <strong>2nd harmonic</strong>.</p>
+<p>In order to see the pattern properly, send a new pulse with a <em>Pulse Width</em> of <strong>2λ</strong>. The 2nd harmonic standing wave should be a lot clearer now.</p>
+<p>Now try sending a continuous wave (click <strong>SEND WAVE</strong> instead of <strong>SEND PULSE</strong>). Notice how the resultant wave gains more and more energy out of each consecutive reflection. This is because we are simulating with ideal conditions which aren&#39;t present in real life. In practice, waves will lose energy as they travel across space (<strong>damping</strong>) and will lose energy after each reflection (<strong>absorption by the boundary</strong>).</p>
+
+<p class="citation">Adapted from: 
+Zhabinskaya, D. (2023, January 13). <em>8.8: Standing waves</em>. Physics LibreTexts.</p>

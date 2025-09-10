@@ -7,19 +7,20 @@
     transition: background-color 0.8s;
 }
 body {
-    height: 95vh;
     margin: 0;
 }
 #main {
-    display: flex; flex-flow: row;
-    height: 100%;
-    width: 98%;
+    display: flex;
+    justify-content: center; align-items: center;
+    width: fit-content;
+    height: fit-content;
+    overflow: scroll;
 }
 #simulation{
     display: flex;
     flex-flow: column;
-    height: 80%;
     margin-left: 4rem;
+    flex-shrink: 0;
     width: 58rem;
 }
 #waveactivity{
@@ -230,33 +231,57 @@ dot3 {background-color: var(--wave3colour);}
 }
 
 #infopage-wrapper {
-    margin-left: auto;
+    width: 40rem;
     align-self: center;
-    flex-grow: 1; flex-shrink: 0;
+    width: 45rem;
     display: flex; flex-flow: column;
     gap: 0.8rem;
 }
 #infopage {
-    padding: 2rem;
-    font-size: 0.9rem;
-    letter-spacing: -0.04rem;
+    padding: 3rem;
+    padding-top: 2rem;
+    font-family: var(--font2);
+    font-size: 0.8rem;
+    line-height: 1.4rem;
+    
     height: 37rem;
+    max-width: 40rem;
     overflow-y: scroll;
+
+
     background-color: var(--info-color);
     color: var(--font-color);
+    border-bottom: 2px solid var(--font-color);
+    
     transition: background-color 0.8s, color 0.8s, 
     max-width 0.6s, transform 0.4s;
-    border-bottom: 2px solid var(--font-color);
-    max-width: 50rem;
 }
 #infopage.short {
     max-width: 20rem;
     transform: translateX(20rem);
 }
+    .MathJax {
+        font-size: 0.95rem !important;
+    }
+    #infopage p {
+        margin-bottom: 1.2rem;
+    }
+    #infopage li {
+        margin-bottom: 0.2rem;
+    }
+    #infopage ul {
+        margin-bottom: 2rem;
+    }
+    .citation {
+        margin-top: 2rem;
+        font-size: 0.9em;
+        opacity: 0.7;
+    }
+
 #titlecard {
     height: 3rem;
     padding-left: 1rem;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     display: flex; align-items: center; gap: 0.75rem;
     color: var(--font-color);
 }
