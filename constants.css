@@ -1,4 +1,5 @@
 :root {
+
     --datapoints: 160;
     --dotdimensions: 0.16rem;
     --dotgap: 0.16rem;
@@ -11,7 +12,7 @@
     --str1: scale(1);
     --str2: scale(1);
     --control-color: #d8dde0;
-    --background-color: #e4e2df;
+    --background-color: #e4e2df
     --font-color: #000000;
     --axis-color: #00000055;
     --tick-color: #252525;
