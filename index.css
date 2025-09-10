@@ -4,15 +4,23 @@
 @import url("./sim-info-pages/infopage.css");
 
 :root{
-    --str1: scale(1);
-    --str2: scale(1);
+    background-color: var(--background-color);
+    transition: background-color 1s;
 }
-#main{
+body {
+    height: 95vh;
+}
+#main {
+    display: flex; flex-flow: row;
+    height: 100%;
+    width: 98%;
+}
+#simulation{
     display: flex;
     flex-flow: column;
     height: 80%;
     margin-left: 4rem;
-    width: calc(var(--medium-width) + 8rem);
+    width: 58rem;
 }
 #waveactivity{
     display: flex;
@@ -37,6 +45,9 @@
     display: flex;
     gap: 2.5rem;
 }
+#parameters > * {background-color: var(--control-color);}
+    #media-vrange { background-color: transparent;}
+    #media-vrange > * {background-color: var(--control-color);}
 
 
 #sim-selector {
@@ -50,6 +61,7 @@
     padding: 0.5rem;
     width: 9rem;
     border: 0.2rem solid rgb(31, 156, 94);
+    background-color: var(--control-color);
     text-align: center;
     opacity: 75%;
 }
@@ -66,8 +78,9 @@
     display: flex;
     align-items: center;
     height: var(--tube-height);
-    border-left: var(--tube-end);
+    border-left: solid 0.2rem var(--tick-color);
     overflow: visible;
+    color: var(--font-color) !important;
 }
 .tube-gap {
     margin-left: calc(var(--dotdimensions)*-0.5);
@@ -79,8 +92,10 @@
     height: inherit;
     margin-left: auto;
     z-index: 2;
-    background-color: var(--backgnd);;
-    border-left: var(--tube-end);
+    background-color: var(--background-color);
+    transition: background-color 1s;
+    border-left: solid 0.2rem var(--tick-color);
+    overflow: visible;
 }
 
 #stringlenwrapper > n {
@@ -92,7 +107,8 @@
 }
 #L {
     top: 55%;
-    border-bottom: 0.15rem solid black;
+    border-bottom: 0.15rem solid var(--tick-color);
+    overflow: visible;;
 }
 #L-lambda {
     bottom: 30%;
@@ -104,7 +120,9 @@
     margin: var(--medium-padding);
     height: 0.08rem;
     translate: 0.03rem calc((var(--tube-height)/-2) - 0.1rem);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--axis-color);
+    color: var(--font-color);
+    transition: background-color 1s;
 
     overflow: visible;
     display: flex;
@@ -133,7 +151,7 @@ n{
 majmrk , minmrk {
     position: relative;
     width: 0.08rem;
-    background-color: rgb(0, 0, 0);
+    background-color: var(--tick-color);
 }
 majmrk {height: 0.8rem; width: 0.1rem;}
 minmrk {height: 0.5rem; margin-bottom: 0.3rem;}
@@ -145,7 +163,9 @@ minmrk {height: 0.5rem; margin-bottom: 0.3rem;}
     float: right; 
     padding-top: 1rem;
     font-size: 0.9rem;
-    letter-spacing: -1px
+    letter-spacing: -1px;
+    color: var(--font-color);
+    transition: color 1s;
 
 }
 button{
@@ -209,11 +229,38 @@ dot3 {background-color: var(--wave3colour);}
     border: none !important;
 }
 
-
-
-
+#infopage-wrapper {
+    margin-left: auto;
+    align-self: center;
+    flex-grow: 1; flex-shrink: 0;
+    display: flex; flex-flow: column;
+    gap: 0.8rem;
+}
 #infopage {
     padding: 2rem;
     font-size: 0.9rem;
     letter-spacing: -0.04rem;
+    height: 37rem;
+    overflow-y: scroll;
+    background-color: var(--info-color);
+    color: var(--font-color);
+    transition: background-color 1s, color 1s, 
+    max-width 0.6s, transform 0.4s;
+    border-bottom: 2px solid var(--font-color);
+    max-width: 50rem;
 }
+#infopage.short {
+    max-width: 20rem;
+    transform: translateX(20rem);
+}
+#titlecard {
+    height: 3rem;
+    padding-left: 1rem;
+    font-size: 0.85rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    color: var(--font-color);
+}
+    .titlecard-link {
+        color: var(--link-colour);
+        transition: color 1s;
+    }

@@ -8,12 +8,21 @@
     --medium-padding: 2px;
     --slidercoverwidth: 1rem;
 
-    --backgnd: #e4e2df;
+    --str1: scale(1);
+    --str2: scale(1);
+    --control-color: #d8dde0;
+    --background-color: #e4e2df;
+    --font-color: #000000;
+    --axis-color: #00000055;
+    --tick-color: #252525;
+    --info-color: rgb(228, 228, 228);
+
     --colour1: #0ead86;
     --colour2: #a3d1c5;
+    --link-colour: rgb(0, 83, 207);
     --wave1colour: #315be2;
-    --wave2colour: rgb(218, 62, 23);
-    --wave3colour: #1da510;
+    --wave2colour: #da3e17;
+    --wave3colour: #06c22f;
     --resultantwavecolour: rgb(126, 0, 165);
     
     font-size: 1.1rem;
@@ -22,5 +31,22 @@
 
     --parameterslider-length: 6rem;
     --parameterslider-thicc: 0.5rem;
+    --toggle-height: 2rem;
+    --toggle-width: 1rem;
+
+}
+
+:root.dark-mode {
+    --background-color: #333030;
+    --font-color: #ffffff;
+    --axis-color: #ffffff66;
+    --tick-color: #c2c2c2;
+    --info-color: rgb(54, 54, 54);
+
+    --link-colour: rgb(70, 143, 253);
+    --wave1colour: #378dff;
+    --wave2colour: #fc653f;
+    --wave3colour: #2cf519;
+    --resultantwavecolour: rgb(190, 17, 243);
 
 }

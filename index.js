@@ -21,10 +21,24 @@ const resetWaveButton = document.getElementById("resetWaveButton")
 const pulseWaveButton = document.getElementById("pulseWaveButton")
 
 const stopwatch = document.getElementById('stopwatch')
+const infopage = document.getElementById('infopage')
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+function lightDarkToggle() {
+    const toggleText = document.getElementById('light-dark-toggle-text')
+    const toggleInput = document.getElementById('toggleinput')
+    if (toggleInput.checked) {
+        document.documentElement.classList.add('dark-mode')
+        toggleText.textContent = 'Dark Mode'
+    }
+    else {
+        document.documentElement.classList.remove('dark-mode')
+        toggleText.textContent = 'Light Mode'
+    }
+}
+lightDarkToggle()
 
 const PI = Math.PI
 var mode = 'std-wave'
@@ -194,9 +208,9 @@ function resetSliderCover() {
 /*STARTUP*/
 async function startup() {
     await resetWave()
-    await generateAxis(totalstrlenmeters, false);
-    await generateSliderCover();
-    await resetSliderCover()
+    generateAxis(totalstrlenmeters, false);
+    generateSliderCover();
+    resetSliderCover();
 } 
 startup();
 
@@ -255,7 +269,7 @@ function loadInfoPage(url) {
         return response.text(); // Get the response as plain text (HTML)
     })
     .then(html => {
-        document.getElementById('infopage').innerHTML = html;
+        infopage.innerHTML = html;
     })
     .catch(error => {
         console.error('Error loading information page:', error);
@@ -269,6 +283,11 @@ simselector.addEventListener(('click'), async (e) => {
         if (e.target.id === simtype.id) {
             simtype.classList.add('selected')
             mode = simtype.id
+
+            if (simtype.id === 'med-wave' || simtype.id === 'transmit') {
+                infopage.classList.add('short')
+            } else infopage.classList.remove('short')
+
             loadInfoPage(mode)
         } else {
             simtype.classList.remove('selected')
@@ -370,8 +389,6 @@ simselector.addEventListener(('click'), async (e) => {
     document.getElementById('resultant-wave').classList.remove('hide')
 });
 
-
-
-
+document.getElementById('toggleinput').addEventListener('click', lightDarkToggle)
 
 

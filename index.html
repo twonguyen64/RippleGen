@@ -7,8 +7,8 @@
     <title>RippleGen</title>
 </head>
 <body>
-    <div style="display: flex; flex-flow: row;">
-    <div id="main">
+<div id="main">
+    <div id="simulation">
         <div id="waveactivity">
             <div id="sim-selector">
                 <div class="sim-type selected" id="std-wave">Standing Wave Simulator</div>
@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="outer-control" id="medium-properties">
-                    <a style="float: left; translate: 0rem 0.5rem;">Properties</a>
+                    <a style="float: left; translate: 0rem 0.5rem;">PROPERTIES</a>
                     <div class="control">
                         <parameter class="parameter-option">
                             <a id="damp-box" style="text-wrap: nowrap;">No damping</a>
@@ -173,10 +173,25 @@
             </div>
         </div>
     </div>
-    <div id="infopage"></div>
+    <div id="infopage-wrapper">
+        <div id="infopage"></div>
+        <div id="titlecard">
+            <span style="font-size: 1.2rem">RippleGEN</span>
+            <span style="letter-spacing: -1px;">by Tu Nguyen (2025)</span>
+            <span>|</span>
+            <a href="https://github.com/twonguyen64/TrajectileSim/" class="titlecard-link">Github Link</a>
+            <span>|</span>
+            <a href="https://github.com/twonguyen64/TrajectileSim/" class="titlecard-link">My Other Projects!</a>
+            <span id="light-dark-toggle-wrapper">
+                <label class="switch">
+                    <input type="checkbox" id="toggleinput" checked>
+                    <span class="toggle"></span>
+                </label>
+                <div id="light-dark-toggle-text">Light Mode</div>
+            </span>
+        </div>
     </div>
-    
-
+</div>
     <script src="index.js"></script>
     <script src="animate.js"></script>
     <script src="parameters.js"></script>

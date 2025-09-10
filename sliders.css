@@ -117,3 +117,47 @@ input[type=number] {
     height: 1rem;
     cursor: pointer;
 }
+
+#light-dark-toggle-wrapper {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.8rem;
+}
+    .switch {
+    border: 1px solid white;
+    position: relative;
+    display: inline-block;
+    width: var(--toggle-width);
+    height: var(--toggle-height);
+    }
+
+    #toggleinput { opacity: 0; width: 0; height: 0;}
+
+    .toggle {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--tick-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+    }
+
+
+    .toggle:before {
+    position: absolute;
+    content: "";
+    height: calc(0.7 * var(--toggle-width));
+    width: calc(0.7 * var(--toggle-width));
+    left: calc(0.15 * var(--toggle-width));
+    top: calc(0.25 * var(--toggle-width));
+    background-color: var(--background-color);
+    transition: .4s;
+    }
+
+    #toggleinput:checked + .toggle:before {
+    transform: translateY(calc(0.85*var(--toggle-width)));
+    }
+
+    #light-dark-toggle-text{
+        width: 5rem;
+    }
